@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "nunjucks": "^3.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "name": "foodfy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ricassiocosta/Foodfy.git",
+  "author": "ricassiocosta <riksiocosta@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/server.js"
+  }
+}

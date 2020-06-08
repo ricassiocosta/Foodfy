@@ -1,0 +1,42 @@
+{% extends 'layout.njk' %}
+
+{% block menu_options %}
+  <a href="/sobre">Sobre</a>
+  <a href="/receitas"><strong>Receitas</strong></a>
+{% endblock menu_options %}
+
+{% block content %}
+  <div class="recipe-detail">
+    <div class="recipe-image">
+      <img src="{{recipe.image}}" alt="{{recipe.title}}">
+    </div>
+    
+    <div class="recipe-title">
+      <h1>{{recipe.title}}</h1>
+      <span>por {{recipe.author}}</span>
+    </div>
+
+    <section class="ingredients">
+      <h2>Ingredientes:</h2>
+      <ul class="recipe-lists">
+        {% for ingredient in recipe.ingredients %}
+          <li>{{ingredient}};</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="preparation-method">
+      <h2>Modo de preparo:</h2>
+      <ol class="recipe-lists">
+        {% for step in recipe.preparation %}
+          <li>{{step}};</li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section class="additional-information">
+      <h2>Informações adicionais:</h2>
+      <p>{{recipe.information}}</p>
+    </section>
+  </div>
+{% endblock content %}

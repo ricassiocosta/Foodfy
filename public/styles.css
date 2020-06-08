@@ -61,23 +61,32 @@ header {
 }
 
 #most_accessed h2 {
-  margin: 50px 0px 20px;
+  margin: 70px 0px 50px;
+}
+
+.content {
+  width: 940px;
+  position: relative;
 }
 
 .recipes{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  width: 940px;
 }
 
 .recipe {
   margin-bottom: 30px;
+  cursor: pointer;
+}
+
+.recipe {
+  text-decoration: none;
 }
 
 .recipe img {
   width: 300px;
   border-radius: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .recipe span {
@@ -85,10 +94,9 @@ header {
   font-size: 18px;
 }
 
-.recipe p {
+.recipe > p {
   color: #777777;
   font-size: 14px;
-  margin-top: 5px;
 }
 
 footer {
@@ -98,6 +106,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 80px;
 }
 
 footer span {
@@ -107,15 +116,49 @@ color: #999999;
 
 /* ABOUT */
 
-#content {
-  width: 940px;
-}
-
-#content h2, h3 {
+.about h2, h3 {
   margin-bottom: 20px;
 }
 
-#content p {
+.about p {
   font-size: 18px;
   margin-bottom: 50px;
+}
+
+/* RECIPE DETAIL */
+
+.recipe-detail h2 {
+  margin: 40px 0px 20px;
+}
+
+.recipe-image img {
+  border-radius: 15px;
+}
+
+.recipe-title {
+  text-align: center;
+  margin: 50px 0px 50px;
+}
+
+.recipe-title h1 {
+  font-size: 36px;
+}
+
+.recipe-title span {
+  color: #777777;
+  font-size: 20px;
+}
+
+.recipe-lists li {
+  margin-left: 5%;
+  font-size: 18px;
+  color: #444444;
+  line-height: 28px;
+}
+
+.additional-information p {
+  margin-left: 3%;
+  font-size: 18px;
+  color: #444444;
+  line-height: normal;
 }
