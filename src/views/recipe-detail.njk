@@ -17,26 +17,35 @@
     </div>
 
     <section class="ingredients">
-      <h2>Ingredientes:</h2>
-      <ul class="recipe-lists">
-        {% for ingredient in recipe.ingredients %}
-          <li>{{ingredient}};</li>
-        {% endfor %}
-      </ul>
+      <span class="sub-title">Ingredientes:</span> 
+      <span class="show-subtitle-content">ESCONDER:</span> 
+      <div class="sub-content" id="ingredient-content">
+        <ul class="recipe-lists">
+          {% for ingredient in recipe.ingredients %}
+            <li>{{ingredient}};</li>
+          {% endfor %}
+        </ul>
+      </div>
     </section>
 
     <section class="preparation-method">
-      <h2>Modo de preparo:</h2>
-      <ol class="recipe-lists">
-        {% for step in recipe.preparation %}
-          <li>{{step}};</li>
-        {% endfor %}
-      </ol>
+      <span class="sub-title">Modo de preparo:</span>
+      <span class="show-subtitle-content">ESCONDER:</span> 
+      <div class="sub-content" id="preparation-content">
+        <ul class="recipe-lists">
+          {% for step in recipe.preparation %}
+            <li>{{step}};</li>
+          {% endfor %}
+        </ul>
+      </div>
     </section>
 
     <section class="additional-information">
-      <h2>Informações adicionais:</h2>
-      <p>{{recipe.information}}</p>
+      <span class="sub-title">Informações adicionais:</span>
+      <span class="show-subtitle-content">ESCONDER:</span> 
+      <div class="sub-content" id="information-content">
+        <p>{{recipe.information}}</p>
+      </div>
     </section>
   </div>
 {% endblock content %}
