@@ -9,6 +9,9 @@ routes.get('/receitas', recipesController.index)
 routes.get('/receitas/:recipe_id', recipesController.show)
 
 routes.get('/admin/receitas/:recipe_id', recipesController.adminShow)
-routes.get('/admin/receitas/:recipe_id/editar', recipesController.update)
+routes.get('/admin/receitas/criar', recipesController.create)
+routes.get('/admin/receitas/:recipe_id/editar', recipesController.edit)
+
+routes.put('/admin/receitas/:recipe_id', recipesController.put)
 
 module.exports = routes

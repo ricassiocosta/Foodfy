@@ -195,3 +195,62 @@ color: #999999;
   margin-bottom: 20px;
   float: right;
 }
+
+/* ADMIN RECIPE EDIT */
+
+.header-edit {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-edit span {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.edit-actions .delete, .edit-actions .save {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  color: white;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+
+.edit-actions .delete {
+  background-color: red;
+}
+
+.edit-actions .save {
+  background-color: #6558c3;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.form-field {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field span {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form-field input[type="text"] {
+  border: 1px solid #dddddd;
+  height: 40px;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 5px 0;
+}
+
+.form-field textarea {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 5px 0;
+  resize: none;
+}
