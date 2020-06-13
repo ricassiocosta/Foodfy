@@ -15,7 +15,7 @@
   <h2>Mais acessadas</h2>
   <div class="recipes">
     {% for recipe in recipes %}
-      <a class="recipe" href="/receitas/{{recipes.indexOf(recipe)}}">
+      <a class="recipe" href="/receitas/{{recipe.id}}">
         <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
         <span>{{recipe.title}}</span>
         <p>{{recipe.author}}</p>

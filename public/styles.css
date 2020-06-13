@@ -181,3 +181,17 @@ color: #999999;
 .additional-information p {
   margin-left: 3%;
 }
+
+/* ADMIN RECIPE DETAILS */
+
+.recipe-detail a {
+  background-color: #6558c3;
+  padding: 8px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  float: right;
+}
