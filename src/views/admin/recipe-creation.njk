@@ -5,14 +5,13 @@
 
 {% block content %}
   <div class="recipe-edit">
-    <form method="POST" action="/admin/receitas/{{recipe.id}}?_method=PUT">
+    <form method="POST" action="/admin/receitas">
       <div class="header-edit">
         <div>
-          <span>Editando receita</span>
+          <span>Criando receita</span>
         </div>
         <div class="edit-actions">
-          <a href="#" class="delete">Deletar</a>
-          <button type="submit" class="save">Salvar receita</button>
+          <button type="submit" class="save">Criar receita</button>
         </div>
       </div>
       <section class="form-content">
@@ -21,24 +20,26 @@
           <input type="text" name="title">
         </div>
         <div class="form-field">
-          <span>Imagem da receita</span>
-          <input type="text" value="{{recipe.image}}" name="image">
+          <span>Imagem da receita (URL)</span>
+          <input type="text" name="image">
         </div>
         <div class="form-field">
+          <span>Autor</span>
+          <input type="text" name="author">
+        </div>
+        <div class="form-field" id="ingredient-list">
           <span>Ingredientes</span>
-          {% for ingredient in recipe.ingredients %}
-            <input type="text" value="{{ingredient}}" name="ingredients">
-          {% endfor %}
+          <input type="text" name="ingredients" class="ingredient-item">
         </div>
-        <div class="form-field">
+        <button class="add-ingredient" type="button">Adcionar novo ingrediente</button>
+        <div class="form-field" id="preparation-list">
           <span>Modo de preparo</span>
-          {% for step in recipe.preparation %}
-            <input type="text" value="{{step}}" name="preparation">
-          {% endfor %}
+          <input type="text" name="preparation" class="preparation-step">
         </div>
+        <button class="add-preparation" type="button">Adcionar novo passo</button>
         <div class="form-field">
           <span>Informações adicionais</span>
-          <textarea name="information" cols="30" rows="10" name="information">{{recipe.information}}</textarea>
+          <textarea name="information" cols="30" rows="10" name="information"></textarea>
         </div>
       </section>
     </form>

@@ -22,7 +22,7 @@
         "Faça no máximo 4 camadas por forma e leve para congelar.",
         "Retire do congelador, frite ou asse e está pronto."
       ],
-      "information": "Preaqueça a chapa, frigideira ou grelha por 10 minutos antes de levar os hambúrgueres. Adicione um pouquinho de óleo ou manteiga e não amasse os hambúrgueres! \r\n\r\n Você sabia que a receita que precede o hambúrguer surgiu no século XIII, na Europa? A ideia de moer a carne chegou em Hamburgo no século XVII, onde um açogueiro resolveu também temperá-la. Assim, a receita foi disseminada nos Estados Unidos por alemães da região. Lá surgiu a ideia de colocar o hambúrguer no meio do pão e adicionar outros ingredientes, como queijom tomates e alface."
+      "information": "Pré-aqueça a chapa, frigideira ou grelha por 10 minutos antes de levar os hambúrgueres. Adicione um pouquinho de óleo ou manteiga e não amasse os hambúrgueres! \r\n\r\n Você sabia que a receita que precede o hambúrguer surgiu no século XIII, na Europa? A ideia de moer a carne chegou em Hamburgo no século XVII, onde um açougueiro resolveu também temperá-la. Assim, a receita foi disseminada nos Estados Unidos por alemães da região. Lá surgiu a ideia de colocar o hambúrguer no meio do pão e adicionar outros ingredientes, como queijos, tomates e alface."
     },
     {
       "id": 2,
@@ -138,6 +138,32 @@
         "açúcar de confeiteiro e corte em quadrados."
       ],
       "information": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque commodi animi a at, obcaecati esse, autem optio aperiam consectetur tempora magnam cupiditate incidunt hic exercitationem tempore ipsum numquam nostrum ratione!"
+    },
+    {
+      "id": 7,
+      "image": "https://img.itdg.com.br/tdg/images/blog/uploads/2020/06/cookie.jpg",
+      "title": "Cookies Americano Perfeito",
+      "author": "Kanbojour",
+      "ingredients": [
+        "125 g de manteiga sem sal em temperatura ambiente",
+        "3/4 xícara de açúcar",
+        "1/2 xícara de açúcar mascavo",
+        "1 ovo",
+        "1 e 3/4 de xícara de farinha de trigo",
+        "1 colher (chá) de fermento em pó",
+        "300 g de chocolate meio amargo picado",
+        "1 colher (chá) de essência de baunilha",
+        "para fazer cookie de chocolate acrescentar 1/4 xícara de chocolate em pó"
+      ],
+      "preparation": [
+        "Misture a manteiga, açúcar mascavo, açúcar, essência de baunilha (e chocolate em pó, se for fazer cookies com base de chocolate).",
+        "Adicione o ovo batido aos poucos e misture bem.",
+        "Acrescente a farinha aos poucos e misture bem (pode ser na mão ou na batedeira planetária)",
+        "Por último, adicione o fermento e misture só para incorporá-lo à massa.",
+        "Depois da massa bem misturada, adicione o chocolate picado.",
+        "Forme bolinhas pequenas e asse em forno preaquecido, sobre papel manteiga, por aproximadamente 15 a 20 minutos (250° C)."
+      ],
+      "information": "As bolinhas devem ser pequenas pois os cookies se espalham no forno. O tempo de forno depende, e tem que cuidar para não queimar embaixo."
     }
   ]
 }

@@ -11,7 +11,7 @@
           <span>Editando receita</span>
         </div>
         <div class="edit-actions">
-          <a href="#" class="delete">Deletar</a>
+          <label for="delete" class="delete">Deletar</label>
           <button type="submit" class="save">Salvar receita</button>
         </div>
       </div>
@@ -41,6 +41,9 @@
           <textarea name="information" cols="30" rows="10" name="information">{{recipe.information}}</textarea>
         </div>
       </section>
+    </form>
+    <form method="POST" action="/admin/receitas/{{recipe.id}}?_method=DELETE">
+      <button type="submit" class="delete" name="delete" id="delete">Deletar</button>
     </form>
   </div>
 {% endblock content %}

@@ -13,3 +13,20 @@ for(let i = 0; i < toggleVisibilityButton.length; i ++) {
     }
   })
 }
+
+
+const ingredientList = document.querySelector("#ingredient-list")
+
+document.querySelector(".add-ingredient").addEventListener('click', () => {
+  let clonedField = document.querySelector(".ingredient-item").cloneNode()
+  clonedField.value = ""
+  ingredientList.appendChild(clonedField)
+})
+
+const preparationList = document.querySelector("#preparation-list")
+
+document.querySelector(".add-preparation").addEventListener('click', () => {
+  let clonedField = document.querySelector(".preparation-step").cloneNode()
+  clonedField.value = ""
+  preparationList.appendChild(clonedField)
+})

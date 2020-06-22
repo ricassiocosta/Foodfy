@@ -85,6 +85,9 @@ header {
 
 .recipe img {
   width: 300px;
+  height: 90px;
+  object-fit: cover;
+  object-position: center;
   border-radius: 15px;
   margin-bottom: 10px;
 }
@@ -155,6 +158,10 @@ color: #999999;
 
 .recipe-image img {
   border-radius: 15px;
+  height: 290px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .recipe-title {
@@ -215,16 +222,21 @@ color: #999999;
   color: white;
   letter-spacing: 0.5px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .edit-actions .delete {
   background-color: red;
+
+}
+
+#delete {
+  display: none;
 }
 
 .edit-actions .save {
   background-color: #6558c3;
   margin-left: 10px;
-  cursor: pointer;
 }
 
 .form-field {
@@ -253,4 +265,13 @@ color: #999999;
   padding: 8px;
   margin: 5px 0;
   resize: none;
+}
+
+.add-ingredient, .add-preparation {
+  background-color: white;
+  color: #796be0;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
 }

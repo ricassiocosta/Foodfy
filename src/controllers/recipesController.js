@@ -55,6 +55,32 @@ exports.edit = (req, res) => {
   return res.render('admin/recipe-edit', {recipe})
 }
 
+exports.post = (req, res) => {
+  const keys = Object.keys(req.body)
+  for(key of keys) {
+    if(req.body[key] == "") {
+      return res.send('Por favor, preencha todos os campos!')
+    }
+  }
+  const id = Number(data.recipes.slice(-1)[0].id + 1)
+  const { title, image, author, ingredients, preparation, information } = req.body
+
+  data.recipes.push({
+    id,
+    image,
+    title,
+    author,
+    ingredients,
+    preparation,
+    information
+  })
+
+  fs.writeFile('src/data.json', JSON.stringify(data, null, 2), (err) => {
+    if(err) return res.send('Erro ao atualizar as informações')
+    return res.redirect('/admin/receitas')
+  })
+}
+
 exports.put = (req, res) => {
   const recipeID = req.params.recipe_id
   let index = 0
@@ -86,28 +112,22 @@ exports.put = (req, res) => {
   })
 } 
 
-exports.post = (req, res) => {
-  const keys = Object.keys(req.body)
-  for(key of keys) {
-    if(req.body[key] == "") {
-      return res.send('Por favor, preencha todos os campos!')
-    }
-  }
-  const id = Number(data.recipes.slice(-1)[0].id + 1)
-  const { title, image, author, ingredients, preparation, information } = req.body
-
-  data.recipes.push({
-    id,
-    image,
-    title,
-    author,
-    ingredients,
-    preparation,
-    information
+exports.delete = (req, res) => {
+  const recipeID = req.params.recipe_id
+  let index = 0
+  const recipe = data.recipes.find((recipe, foundIndex) => {
+    index = foundIndex
+    return recipe.id == recipeID
   })
+
+  if(!recipe) {
+    return res.send('receita não encontrada')
+  }
+
+  data.recipes.splice(index, 1)
 
   fs.writeFile('src/data.json', JSON.stringify(data, null, 2), (err) => {
     if(err) return res.send('Erro ao atualizar as informações')
-    return res.redirect('/admin/receitas')
+    return res.redirect("/receitas")
   })
-}
+} 
