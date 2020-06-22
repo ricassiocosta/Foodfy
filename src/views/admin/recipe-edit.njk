@@ -24,18 +24,20 @@
           <span>Imagem da receita</span>
           <input type="text" value="{{recipe.image}}" name="image">
         </div>
-        <div class="form-field">
+        <div class="form-field" id="ingredient-list">
           <span>Ingredientes</span>
           {% for ingredient in recipe.ingredients %}
-            <input type="text" value="{{ingredient}}" name="ingredients">
+            <input type="text" value="{{ingredient}}" name="ingredients" class="ingredient-item">
           {% endfor %}
         </div>
-        <div class="form-field">
+        <button class="add-ingredient" type="button">Adcionar novo ingrediente</button>
+        <div class="form-field" id="preparation-list">
           <span>Modo de preparo</span>
           {% for step in recipe.preparation %}
-            <input type="text" value="{{step}}" name="preparation">
+            <input type="text" value="{{step}}" name="preparation" class="preparation-step">
           {% endfor %}
         </div>
+        <button class="add-preparation" type="button">Adcionar novo passo</button>
         <div class="form-field">
           <span>Informações adicionais</span>
           <textarea name="information" cols="30" rows="10" name="information">{{recipe.information}}</textarea>
