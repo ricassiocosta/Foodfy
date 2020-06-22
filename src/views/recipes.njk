@@ -14,19 +14,5 @@
         <p>{{recipe.author}}</p>
       </a>
     {% endfor %}
-    {% for recipe in recipes %}
-      <a class="recipe" href="/receitas/{{recipe.id}}">
-        <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
-        <span>{{recipe.title}}</span>
-        <p>{{recipe.author}}</p>
-      </a>
-    {% endfor %}
-    {% for recipe in recipes %}
-      <a class="recipe" href="/receitas/{{recipe.id}}">
-        <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
-        <span>{{recipe.title}}</span>
-        <p>{{recipe.author}}</p>
-      </a>
-    {% endfor %}
   </div>
 {% endblock content %}}

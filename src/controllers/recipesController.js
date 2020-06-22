@@ -13,6 +13,12 @@ exports.index = (req, res) => {
   })
 }
 
+exports.adminIndex = (req, res) => {
+  return res.render('admin/recipes', {
+    recipes: data.recipes
+  })
+}
+
 exports.show = (req, res) => {
   const recipeID = req.params.recipe_id
   const recipe = data.recipes.find((recipe) => {

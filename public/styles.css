@@ -92,12 +92,17 @@ header {
   margin-bottom: 10px;
 }
 
-.recipe span {
+.recipe span,
+.recipes-adminview  span
+{
   color: #111111;
+  font-weight: bold;
   font-size: 18px;
 }
 
-.recipe > p {
+.recipe > p,
+.recipes-adminview p 
+{
   color: #777777;
   font-size: 14px;
 }
@@ -267,11 +272,35 @@ color: #999999;
   resize: none;
 }
 
-.add-ingredient, .add-preparation {
+.add-ingredient, .add-preparation, .more-detail {
   background-color: white;
   color: #796be0;
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 10px;
   cursor: pointer;
+}
+
+.recipes-adminview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.recipe-adminview {
+  display: flex;
+  align-items: center;
+}
+
+.recipes-adminview img {
+  width: 172px;
+  height: 80px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.more-detail {
+  text-decoration: none;
 }
