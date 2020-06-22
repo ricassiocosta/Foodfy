@@ -4,7 +4,10 @@
 {% endblock menu_options %}
 
 {% block content %}
-  <h2 style="margin-bottom: 30px">Gerenciar receitas</h2>
+  <div>
+    <a href="/admin/receitas/criar" class="create-recipe">Criar receita</a>
+    <h2 style="margin-bottom: 50px">Gerenciar receitas</h2>
+  </div>
   <div class="recipes-adminview">
     {% for recipe in recipes %}
     <div class="recipe-adminview">

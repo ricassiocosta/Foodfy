@@ -196,7 +196,7 @@ color: #999999;
 
 /* ADMIN RECIPE DETAILS */
 
-.recipe-detail a {
+.recipe-detail a, .create-recipe {
   background-color: #6558c3;
   padding: 8px;
   border-radius: 4px;
@@ -311,6 +311,7 @@ color: #999999;
   height: 80px;
   margin-top: 0px;
 }
+
 #admin-header div {
   display: flex;
   align-items: center;
