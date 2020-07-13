@@ -7,17 +7,16 @@
 
 {% block content %}
   <div>
-    <a href="/admin/chefs/criar" class="create-recipe">Criar chef</a>
+    <a href="/admin/chefs/criar" class="create-chef">Criar chef</a>
     <h2 style="margin-bottom: 50px">Gerenciar chefs</h2>
   </div>
-  <div class="recipes-adminview">
-    {% for recipe in recipes %}
-    <div class="recipe-adminview">
-      <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
+  <div class="chefs-adminview">
+    {% for chef in chefs %}
+    <div class="chef-adminview">
+      <img src="{{chef.avatar_url}}" alt="Imagem de {{chef.name}}">
       <div>
-        <span>{{recipe.title}}</span>
-        <p>{{recipe.author}}</p>
-        <a href="/admin/receitas/{{recipe.id}}" class="more-detail">Visualizar</a>
+        <span>{{chef.name}}</span><br>
+        <a href="/admin/chefs/{{chef.id}}" class="more-detail">Visualizar</a>
       </div>
     </div>
     {% endfor %}

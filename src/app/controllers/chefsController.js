@@ -1,7 +1,11 @@
 const Chef = require('../models/Chef')
 
 exports.index = (req, res) => {
-  return res.render('admin/chefs')
+  Chef.all((chefs) => {
+    return res.render('admin/chefs', {
+      chefs
+    })
+  })
 }
 
 exports.create = (req, res) => {
