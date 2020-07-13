@@ -1,6 +1,7 @@
 const fs = require('fs')
 const data = require('../../data.json')
 const Recipe = require('../models/Recipe')
+const Chef = require('../models/Chef')
 
 exports.mostAccessed = (req, res) => {
   return res.render('home', {
@@ -46,7 +47,11 @@ exports.showAdmin = (req, res) => {
 }
 
 exports.create = (req, res) => {
-  return res.render('admin/recipe-creation')
+  Chef.all((chefs) => {
+    return res.render('admin/recipe-creation', {
+      chefs
+    })
+  })
 }
 
 exports.edit = (req, res) => {

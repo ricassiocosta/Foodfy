@@ -25,7 +25,13 @@
         </div>
         <div class="form-field">
           <span>Autor</span>
-          <input type="text" name="author">
+          <select name="chef">
+            {% for chef in chefs %}
+            <option value="{{chef.id}}">
+              {{chef.name}}
+            </option>
+            {% endfor %}
+          </select>
         </div>
         <div class="form-field" id="ingredient-list">
           <span>Ingredientes</span>
