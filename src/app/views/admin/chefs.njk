@@ -1,0 +1,25 @@
+{% extends 'admin/layout-admin.njk' %}
+
+{% block header %}
+  <a href="/admin/receitas"><span>RECEITAS</span></a>
+  <a href="/admin/chefs"><span class="selected">CHEFS</span></a>
+{% endblock header %}
+
+{% block content %}
+  <div>
+    <a href="/admin/receitas/criar" class="create-recipe">Criar chef</a>
+    <h2 style="margin-bottom: 50px">Gerenciar chefs</h2>
+  </div>
+  <div class="recipes-adminview">
+    {% for recipe in recipes %}
+    <div class="recipe-adminview">
+      <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
+      <div>
+        <span>{{recipe.title}}</span>
+        <p>{{recipe.author}}</p>
+        <a href="/admin/receitas/{{recipe.id}}" class="more-detail">Visualizar</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock content %}}

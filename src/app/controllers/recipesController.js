@@ -2,7 +2,7 @@ const fs = require('fs')
 const data = require('../../data.json')
 const Recipe = require('../models/Recipe')
 
-exports.recipeHighlights = (req, res) => {
+exports.mostAccessed = (req, res) => {
   return res.render('home', {
     recipes: data.recipes.slice(0,6)
   })
@@ -14,7 +14,7 @@ exports.index = (req, res) => {
   })
 }
 
-exports.adminIndex = (req, res) => {
+exports.indexAdmin = (req, res) => {
   return res.render('admin/recipes', {
     recipes: data.recipes
   })
@@ -33,7 +33,7 @@ exports.show = (req, res) => {
   return res.render('recipe-detail', {recipe})
 }
 
-exports.adminShow = (req, res) => {
+exports.showAdmin = (req, res) => {
   const recipeID = req.params.recipe_id
   const recipe = data.recipes.find((recipe) => {
     return recipe.id == recipeID
