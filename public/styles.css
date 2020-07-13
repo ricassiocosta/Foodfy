@@ -318,3 +318,16 @@ color: #999999;
   width: 940px;
   margin: 0 auto;
 }
+
+#admin-header a {
+  text-decoration: none;
+}
+
+#admin-header span {
+  color: white;
+  margin-left: 20px;
+}
+
+#admin-header span.selected {
+  color: gray;
+}
