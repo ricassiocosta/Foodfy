@@ -71,7 +71,7 @@ exports.post = (req, res) => {
   }
 
   Recipe.create(req.body, (recipe) => {
-    return res.redirect(`admin/receitas/${recipe}`)
+    return res.redirect(`receitas/${recipe.id}`)
   })
 }
 

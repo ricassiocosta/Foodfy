@@ -17,8 +17,8 @@ module.exports = {
     const values = [
       data.image,
       data.title,
-      data.ingredients,
-      data.preparation,
+      [data.ingredients],
+      [data.preparation],
       data.information,
       date(Date.now()).ISO
     ]
