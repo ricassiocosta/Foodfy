@@ -1,5 +1,6 @@
 const fs = require('fs')
 const data = require('../../data.json')
+const Recipe = require('../models/Recipe')
 
 exports.recipeHighlights = (req, res) => {
   return res.render('home', {
@@ -68,22 +69,9 @@ exports.post = (req, res) => {
       return res.send('Por favor, preencha todos os campos!')
     }
   }
-  const id = Number(data.recipes.slice(-1)[0].id + 1)
-  const { title, image, author, ingredients, preparation, information } = req.body
 
-  data.recipes.push({
-    id,
-    image,
-    title,
-    author,
-    ingredients,
-    preparation,
-    information
-  })
-
-  fs.writeFile('src/data.json', JSON.stringify(data, null, 2), (err) => {
-    if(err) return res.send('Erro ao atualizar as informações')
-    return res.redirect('/admin/receitas')
+  Recipe.create(req.body, (recipe) => {
+    return res.redirect(`admin/receitas/${recipe}`)
   })
 }
 

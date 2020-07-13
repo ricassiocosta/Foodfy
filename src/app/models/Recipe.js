@@ -22,5 +22,11 @@ module.exports = {
       data.information,
       date(Date.now()).ISO
     ]
+
+    db.query(query, values, (err, results) => {
+      if(err) throw `DATABASE error! ${err}`
+
+      return callback(results.rows[0])
+    })
   }
 }
