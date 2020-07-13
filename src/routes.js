@@ -13,10 +13,12 @@ routes.get('/admin', (req, res) => { return res.redirect('/admin/receitas')})
 routes.get('/admin/receitas', recipesController.indexAdmin)
 routes.get('/admin/chefs', chefsController.index)
 routes.get('/admin/receitas/criar', recipesController.create)
+routes.get('/admin/chefs/criar', chefsController.create)
 routes.get('/admin/receitas/:recipe_id', recipesController.showAdmin)
 routes.get('/admin/receitas/:recipe_id/editar', recipesController.edit)
 
 routes.post('/admin/receitas', recipesController.post)
+routes.post('/admin/chefs', chefsController.post)
 routes.put('/admin/receitas/:recipe_id', recipesController.put)
 routes.delete('/admin/receitas/:recipe_id', recipesController.delete)
 
