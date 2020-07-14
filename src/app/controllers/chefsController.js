@@ -52,8 +52,15 @@ module.exports = {
 
   delete(req, res) {
     const chefID = req.params.chef_id
-    Chef.delete(chefID, () => {
-      return res.redirect('/admin/chefs')
+
+    Recipe.recipesByAuthor(chefID, (recipes) => {
+      if(recipes.length > 0) {
+        return res.send('[ERROR] O Chef não pôde ser deletado! Delete todas as receitas de um chefe antes de deletá-lo.')
+      } else {
+        Chef.delete(chefID, () => {
+          return res.redirect('/admin/chefs')
+        })
+      }
     })
   }
 }
