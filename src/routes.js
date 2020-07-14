@@ -20,8 +20,11 @@ routes.get('/admin/chefs/:chef_id', chefsController.show)
 routes.get('/admin/chefs/:chef_id/editar', chefsController.edit)
 
 routes.post('/admin/receitas', recipesController.post)
-routes.post('/admin/chefs', chefsController.post)
 routes.put('/admin/receitas/:recipe_id', recipesController.put)
 routes.delete('/admin/receitas/:recipe_id', recipesController.delete)
+
+routes.post('/admin/chefs', chefsController.post)
+routes.put('/admin/chefs/:chef_id', chefsController.put)
+routes.delete('/admin/chefs/:chef_id', recipesController.delete)
 
 module.exports = routes

@@ -25,7 +25,10 @@ module.exports = {
   },
 
   edit(req, res) {
-    
+    const chefID = req.params.chef_id
+    Chef.show(chefID, (chef) => {
+      return res.render('admin/chef-edit', { chef })
+    })
   },
 
   post(req, res) {
@@ -40,5 +43,15 @@ module.exports = {
       return res.redirect(`chefs/${chef.id}`)
     })
   },
+
+  put(req, res) {
+    Chef.update(req.body, () => {
+      return res.redirect(`/admin/chefs/${req.body.id}`)
+    })
+  },
+
+  delete(req, res) {
+
+  }
 
 }

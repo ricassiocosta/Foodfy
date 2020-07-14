@@ -7,7 +7,7 @@
 
 {% block content %}
   <div>
-    <a href="/admin/chefs/criar" class="create-chef">Editar Chef</a>
+    <a href="/admin/chefs/{{chef.id}}/editar" class="create-chef">Editar Chef</a>
     <h2 style="margin-bottom: 50px">Chef: {{chef.name}}</h2>
   </div>
   <div class="chef-detail">
@@ -36,5 +36,5 @@
       </div>
       {% endfor %}
   </div>
-  </div>
+</div>
 {% endblock content %}}

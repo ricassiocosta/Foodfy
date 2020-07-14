@@ -1,0 +1,34 @@
+{% extends 'admin/layout-admin.njk' %}
+
+{% block menu_options %}
+{% endblock menu_options %}
+
+{% block content %}
+  <div class="recipe-edit">
+    <form method="POST" action="/admin/chefs/{{chef.id}}?_method=PUT">
+      <div class="header-edit">
+        <div>
+          <span>Editando chef</span>
+        </div>
+        <input type="hidden" name="id" value="{{chef.id}}">
+        <div class="edit-actions">
+          <label for="delete" class="delete">Deletar</label>
+          <button type="submit" class="save">Salvar chef</button>
+        </div>
+      </div>
+      <section class="form-content">
+        <div class="form-field">
+          <span>Nome do Autor</span>
+          <input type="text" name="name" value="{{chef.name}}">
+        </div>
+        <div class="form-field">
+          <span>Avatar (URL)</span>
+          <input type="text" name="avatar_url" value="{{chef.avatar_url}}">
+        </div>
+      </section>
+    </form>
+    <form method="POST" action="/admin/chefs/{{chef.id}}?_method=DELETE">
+      <button type="submit" class="delete" name="delete" id="delete">Deletar</button>
+    </form>
+  </div>
+{% endblock content %}
