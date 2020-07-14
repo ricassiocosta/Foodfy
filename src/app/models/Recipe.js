@@ -51,7 +51,7 @@ module.exports = {
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
       WHERE recipes.id = $1
       `, 
-      [recipeID], (err, results) => {
+    [recipeID], (err, results) => {
       if(err) throw `DATABASE error! ${err}`
       return callback(results.rows[0])
     })
@@ -61,6 +61,18 @@ module.exports = {
     db.query(`SELECT * FROM recipes WHERE recipes.id = $1`, [recipeID], (err, results) => {
       if(err) throw `DATABASE error! ${err}`
       return callback(results.rows[0])
+    })
+  },
+
+  recipesByAuthor(chefID, callback) {
+    db.query(`
+      SELECT recipes.*
+      FROM recipes
+      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      WHERE recipes.chef_id = $1
+    `, [chefID], (err, results) => {
+      if(err) throw `DATABASE error! ${err}`
+      return callback(results.rows)
     })
   },
 

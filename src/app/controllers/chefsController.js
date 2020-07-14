@@ -1,26 +1,44 @@
 const Chef = require('../models/Chef')
+const Recipe = require('../models/Recipe')
 
-exports.index = (req, res) => {
-  Chef.all((chefs) => {
-    return res.render('admin/chefs', {
-      chefs
+module.exports = {
+ 
+  index(req, res) {
+    Chef.all((chefs) => {
+      return res.render('admin/chefs', {
+        chefs
+      })
     })
-  })
-}
+  },
 
-exports.create = (req, res) => {
-  return res.render('admin/chef-creation')
-}
+  create(req, res) {
+    return res.render('admin/chef-creation')
+  },
 
-exports.post = (req, res) => {
-  const keys = Object.keys(req.body)
-  for(key of keys) {
-    if(req.body[key] == "") {
-      return res.send('Por favor, preencha todos os campos!')
+  show(req, res) {
+    const chefID = req.params.chef_id
+    Chef.show(chefID, (chef) => {
+      Recipe.recipesByAuthor(chef.id, (recipes) => {
+        return res.render('admin/chef-detail', { chef, recipes })
+      })
+    })
+  },
+
+  edit(req, res) {
+    
+  },
+
+  post(req, res) {
+    const keys = Object.keys(req.body)
+    for(key of keys) {
+      if(req.body[key] == "") {
+        return res.send('Por favor, preencha todos os campos!')
+      }
     }
-  }
 
-  Chef.create(req.body, (chef) => {
-    return res.redirect(`chefs/${chef.id}`)
-  })
+    Chef.create(req.body, (chef) => {
+      return res.redirect(`chefs/${chef.id}`)
+    })
+  },
+
 }

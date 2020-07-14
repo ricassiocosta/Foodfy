@@ -29,5 +29,19 @@ module.exports = {
       if(err) throw `DATABASE error! ${err}`
       return callback(results.rows)
     })
+  },
+
+  show(chefID, callback) {
+    db.query(`
+      SELECT chefs.*, (SELECT count(*) FROM recipes WHERE recipes.chef_id = chefs.id) AS recipesAmount
+      FROM chefs
+      LEFT JOIN recipes ON (chefs.id = recipes.chef_id)
+      WHERE chefs.id = $1
+      GROUP BY chefs.id
+      `, 
+    [chefID], (err, results) => {
+      if(err) throw `DATABASE error! ${err}`
+      return callback(results.rows[0])
+    })
   }
 }
