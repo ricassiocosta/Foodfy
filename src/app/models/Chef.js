@@ -63,5 +63,12 @@ module.exports = {
       if(err) throw `DATABASE error! ${err}`
       return callback()
     })
+  },
+
+  delete(chefID, callback) {
+    db.query(`DELETE FROM chefs WHERE id = $1`, [chefID], (err) => {
+      if(err) throw `DATABASE error! ${err}`
+      return callback()
+    })
   }
 }

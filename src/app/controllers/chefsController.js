@@ -51,7 +51,9 @@ module.exports = {
   },
 
   delete(req, res) {
-
+    const chefID = req.params.chef_id
+    Chef.delete(chefID, () => {
+      return res.redirect('/admin/chefs')
+    })
   }
-
 }
