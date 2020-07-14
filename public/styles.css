@@ -28,8 +28,9 @@ header {
   font-size: 16px;
 }
 
-#menu a:first-child{
+#menu a:nth-child(2){
   margin-right: 30px;
+  margin-left: 30px;
 }
 
 #banner {
@@ -300,6 +301,11 @@ color: #999999;
 .recipe-adminview, .chef-adminview {
   display: flex;
   align-items: center;
+}
+
+#recipes-amount {
+  color: gray;
+  font-size: 14px;
 }
 
 .recipes-adminview img {

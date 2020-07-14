@@ -3,6 +3,12 @@ const Recipe = require('../models/Recipe')
 
 module.exports = {
  
+  listing(req, res) {
+    Chef.all((chefs) => {
+      return res.render('chefs', { chefs })
+    })
+  },
+
   index(req, res) {
     Chef.all((chefs) => {
       return res.render('admin/chefs', {

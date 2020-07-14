@@ -1,0 +1,24 @@
+{% extends 'layout.njk' %}
+
+{% block menu_options %}
+  <a href="/sobre">Sobre</a>
+  <a href="/receitas">Receitas</a>
+  <a href="/chefs"><strong>Chefs</strong></a>
+{% endblock menu_options %}
+
+{% block content %}
+  <div class="chefs-adminview">
+    {% for chef in chefs %}
+    <div class="chef-adminview">
+      <img src="{{chef.avatar_url}}" alt="Imagem de {{chef.name}}">
+      <div>
+        <span><strong>{{chef.name}}</strong></span><br>
+        <span id="recipes-amount">{{chef.recipesamount}} receitas</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock content %}}
+
+{% block footer %}
+{% endblock %}

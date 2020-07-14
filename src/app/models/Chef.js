@@ -25,7 +25,11 @@ module.exports = {
   },
 
   all(callback) {
-    db.query(`SELECT * FROM chefs ORDER BY chefs.name`, (err, results) => {
+    db.query(`
+    SELECT chefs.*, (SELECT count(*) FROM recipes WHERE recipes.chef_id = chefs.id) AS recipesamount
+    FROM chefs 
+    ORDER BY chefs.name
+    `, (err, results) => {
       if(err) throw `DATABASE error! ${err}`
       return callback(results.rows)
     })
