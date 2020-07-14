@@ -194,6 +194,10 @@ color: #999999;
   margin-left: 3%;
 }
 
+#information-content {
+  margin-bottom: 50px;
+}
+
 /* ADMIN RECIPE/CHEF DETAILS */
 
 .recipe-detail a, .create-recipe, .create-chef {

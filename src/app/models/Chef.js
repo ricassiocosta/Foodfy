@@ -25,7 +25,7 @@ module.exports = {
   },
 
   all(callback) {
-    db.query(`SELECT * FROM chefs`, (err, results) => {
+    db.query(`SELECT * FROM chefs ORDER BY chefs.name`, (err, results) => {
       if(err) throw `DATABASE error! ${err}`
       return callback(results.rows)
     })

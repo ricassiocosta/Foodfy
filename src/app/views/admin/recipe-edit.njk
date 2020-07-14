@@ -6,6 +6,7 @@
 {% block content %}
   <div class="recipe-edit">
     <form method="POST" action="/admin/receitas/{{recipe.id}}?_method=PUT">
+      <input type="hidden" name="id" value="{{recipe.id}}">
       <div class="header-edit">
         <div>
           <span>Editando receita</span>
@@ -23,6 +24,16 @@
         <div class="form-field">
           <span>Imagem da receita</span>
           <input type="text" value="{{recipe.image}}" name="image">
+        </div>
+        <div class="form-field">
+          <span>Autor</span>
+          <select name="chef">
+            {% for chef in chefs %}
+            <option value="{{chef.id}}" {% if recipe.chef_id == chef.id %}selected{% endif %}>
+              {{chef.name}}
+            </option>
+            {% endfor %}
+          </select>
         </div>
         <div class="form-field" id="ingredient-list">
           <span>Ingredientes</span>
