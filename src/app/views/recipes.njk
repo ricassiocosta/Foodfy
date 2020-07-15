@@ -7,6 +7,12 @@
 {% endblock menu_options %}
 
 {% block content %}
+  <div class="search">
+    <form action="">
+      <input type="text" placeholder="Pesquisar receita" name="filter">
+      <button>Buscar</button>
+    </form>
+  </div>
   <div class="recipes">
     {% for recipe in recipes %}
       <a class="recipe" href="/receitas/{{recipe.id}}">
