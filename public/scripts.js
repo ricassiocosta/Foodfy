@@ -16,10 +16,8 @@ for(let i = 0; i < toggleVisibilityButton.length; i ++) {
 
 
 const ingredientList = document.querySelector("#ingredient-list")
-
-const addIngredientBtn = document.querySelector(".add-ingredient")
-if(addIngredientBtn) {
-  addIngredientBtn.addEventListener('click', () => {
+if(ingredientList) {
+  document.querySelector(".add-ingredient").addEventListener('click', () => {
     let clonedField = document.querySelector(".ingredient-item").cloneNode()
     clonedField.value = ""
     ingredientList.appendChild(clonedField)
@@ -27,10 +25,8 @@ if(addIngredientBtn) {
 }
 
 const preparationList = document.querySelector("#preparation-list")
-
-const addPreparationBtn = document.querySelector(".add-preparation")
-if(addPreparationBtn) {
-  addIngredientBtn.addEventListener('click', () => {
+if(preparationList) {
+  document.querySelector(".add-preparation").addEventListener('click', () => {
     let clonedField = document.querySelector(".preparation-step").cloneNode()
     clonedField.value = ""
     preparationList.appendChild(clonedField)

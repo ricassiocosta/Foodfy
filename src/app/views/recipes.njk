@@ -13,6 +13,9 @@
       <button>Buscar</button>
     </form>
   </div>
+  {% if filter %}
+    <h2>Buscando por "{{filter}}"</h2><br>
+  {% endif %}
   <div class="recipes">
     {% for recipe in recipes %}
       <a class="recipe" href="/receitas/{{recipe.id}}">
