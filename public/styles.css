@@ -1,4 +1,4 @@
-d@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 * {
   margin: 0;
@@ -404,7 +404,7 @@ color: #999999;
   border-radius: 4px;
   color: white;
   letter-spacing: 0.5px;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .search input[type="text"] {
@@ -413,4 +413,22 @@ color: #999999;
   height: 30px;
   padding: 8px;
   border-radius: 4px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.pagination a,
+.pagination span {
+    color: #6558c3;
+    text-decoration: none;
+    margin-right: 8px;
+}
+
+.pagination a:hover {
+    filter: brightness(0.3);
+    border-bottom: 1px solid #6558c3;
 }

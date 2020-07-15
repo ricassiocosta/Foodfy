@@ -123,5 +123,38 @@ module.exports = {
       if(err) throw `DATABASE error! ${err}`
       return callback()
     })
+  },
+
+  paginate(params) {
+    const { filter, offset, callback } = params
+
+    let query = "",
+        filterQuery = "",
+        totalQuery = `(
+          SELECT count (*) FROM recipes
+        ) AS total`
+    
+    if(filter) {
+      filterQuery = `
+        WHERE recipes.title ILIKE '%${filter}%'
+      `
+      totalQuery = `(
+        SELECT count(*) FROM recipes
+        ${filterQuery}
+      ) AS total`
+    }
+
+    query = `
+      SELECT recipes.*, ${totalQuery}
+      FROM recipes
+      ${filterQuery}
+      LIMIT 12
+      OFFSET $1
+    `
+
+    db.query(query, [offset], (err, results) => {
+      if(err) throw `DATABASE error! ${err}`
+      callback(results.rows)
+    })
   }
 }

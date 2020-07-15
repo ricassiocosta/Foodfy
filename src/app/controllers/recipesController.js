@@ -11,11 +11,25 @@ module.exports = {
   },
 
   index(req, res) {
-    Recipe.all((recipes) => {
-      return res.render('recipes', {
-        recipes
-      })
-    })
+    let { filter, page } = req.query
+
+    page = page || 1
+    let offset = 12 * (page - 1)
+
+    const params = {
+      filter,
+      page,
+      offset,
+      callback(recipes) {
+        const pagination = {
+          total: Math.ceil(recipes[0].total / 12),
+          page
+        }
+        return res.render('recipes', { recipes, filter, pagination})
+      }
+    }
+
+    Recipe.paginate(params)
   },
 
   indexAdmin(req, res) {
