@@ -16,7 +16,7 @@
   {% if filter %}
     <h2>Buscando por "{{filter}}"</h2><br>
   {% endif %}
-  <div class="recipes">
+  <div {% if recipes %} class="recipes expanded" {% else %} class="recipes" {% endif %}>
     {% for recipe in recipes %}
       <a class="recipe" href="/receitas/{{recipe.id}}">
         <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
@@ -33,6 +33,3 @@
     data-filter={{filter}}
   ></div>
 {% endblock content %}}
-
-{% block footer %}
-{% endblock %}

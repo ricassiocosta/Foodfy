@@ -5,7 +5,7 @@ const chefsController = require('./app/controllers/chefsController')
 const routes = express.Router()
 
 routes.get('/', recipesController.mostAccessed)
-routes.get('/sobre', (req, res) => { return res.render('about') })
+routes.get('/sobre', (req, res) => { return res.render('site/about') })
 routes.get('/receitas', recipesController.index)
 routes.get('/chefs', chefsController.listing)
 routes.get('/receitas/:recipe_id', recipesController.show)

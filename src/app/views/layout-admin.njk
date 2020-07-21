@@ -8,14 +8,11 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <a href="/"><img src="/assets/logo.png" alt="foodfy"></a>
-      <div id="menu">
-        {% block menu_options %}
-          <a href="/sobre">Sobre</a>
-          <a href="/receitas">Receitas</a>
-          <a href="/chefs">Chefs</a>
-        {% endblock menu_options %}
+    <header class="admin-header">
+      <div>
+        <a href="/admin"><img src="/assets/logo-white.png" alt="foodfy"></a>
+        {% block header %}
+        {% endblock header %}
       </div>
     </header> 
     <div class="content">

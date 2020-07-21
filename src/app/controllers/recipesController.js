@@ -4,7 +4,7 @@ const Chef = require('../models/Chef')
 module.exports = {
   mostAccessed(req, res) {
     Recipe.mostAccessed((recipes) => {
-      return res.render('home', {
+      return res.render('site/home', {
         recipes
       })
     })
@@ -25,7 +25,7 @@ module.exports = {
           total: Math.ceil(recipes[0].total / 12),
           page
         }
-        return res.render('recipes', { recipes, filter, pagination})
+        return res.render('site/recipes', { recipes, filter, pagination})
       }
     }
 
@@ -34,7 +34,7 @@ module.exports = {
 
   indexAdmin(req, res) {
     Recipe.all((recipes) => {
-      return res.render('admin/recipes', {
+      return res.render('admin/recipes/index', {
         recipes
       })
     })
@@ -42,14 +42,14 @@ module.exports = {
 
   show(req, res) {
     const recipeID = req.params.recipe_id
-    const recipe = Recipe.find(recipeID, (recipe) => {
+    Recipe.find(recipeID, (recipe) => {
       if(!recipe) {
         return res.send('receita não encontrada')
       }
     }) 
 
     Recipe.show(recipeID, (recipe) => {
-      return res.render('recipe-detail', {
+      return res.render('site/recipe-detail', {
         recipe
       })
     })
@@ -64,7 +64,7 @@ module.exports = {
     })
 
     Recipe.show(recipeID, (recipe) => {
-      return res.render('admin/recipe-detail', {
+      return res.render('admin/recipes/show', {
         recipe
       })
     })
@@ -72,7 +72,7 @@ module.exports = {
 
   create(req, res) {
     Chef.all((chefs) => {
-      return res.render('admin/recipe-creation', {
+      return res.render('admin/recipes/create', {
         chefs
       })
     })
@@ -88,7 +88,7 @@ module.exports = {
 
     Recipe.show(recipeID, (recipe) => {
       Chef.all((chefs) => {
-        return res.render('admin/recipe-edit', {
+        return res.render('admin/recipes/edit', {
           recipe,
           chefs
         })

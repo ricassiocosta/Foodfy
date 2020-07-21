@@ -10,9 +10,11 @@
 
 body {
   font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  overflow-x: hidden;
 }
 
 header {
@@ -20,6 +22,27 @@ header {
   justify-content: space-between;
   margin: 36px 0px 36px;
   width: 940px;
+}
+
+footer {
+  height: 62px;
+  width: 100%;
+  background-color: #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer span {
+  font-size: 14px;
+  color: #999999; 
+}
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #menu a{
@@ -70,17 +93,22 @@ header {
   position: relative;
 }
 
-.recipes{
+.recipes {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
 }
 
+.recipes.expanded {
+  min-height: 72vh;
+}
+
 .recipe {
+  max-height: 166px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   cursor: pointer;
 }
 
@@ -112,20 +140,6 @@ header {
   font-size: 14px;
 }
 
-footer {
-  height: 62px;
-  width: 100%;
-  background-color: #eeeeee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 80px;
-}
-
-footer span {
-font-size: 14px;
-color: #999999; 
-}
 
 /* ABOUT */
 
@@ -333,30 +347,30 @@ color: #999999;
   text-decoration: none;
 }
 
-#admin-header {
+header.admin-header {
+  width: 100vw;
   background-color: #111111;
-  width: 100%;
   height: 80px;
   margin-top: 0px;
 }
 
-#admin-header div {
+header.admin-header div {
   display: flex;
-  align-items: center;
   width: 940px;
+  align-items: center;
   margin: 0 auto;
 }
 
-#admin-header a {
+header.admin-header a {
   text-decoration: none;
 }
 
-#admin-header span {
+header.admin-header span {
   color: gray;
   margin-left: 20px;
 }
 
-#admin-header span.selected {
+header.admin-header span.selected {
   color: white;
 }
 
@@ -418,7 +432,7 @@ color: #999999;
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  margin: 16px 0;
 }
 
 .pagination a,

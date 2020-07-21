@@ -5,27 +5,27 @@ module.exports = {
  
   listing(req, res) {
     Chef.all((chefs) => {
-      return res.render('chefs', { chefs })
+      return res.render('site/chefs', { chefs })
     })
   },
 
   index(req, res) {
     Chef.all((chefs) => {
-      return res.render('admin/chefs', {
+      return res.render('admin/chefs/index', {
         chefs
       })
     })
   },
 
   create(req, res) {
-    return res.render('admin/chef-creation')
+    return res.render('admin/chefs/create')
   },
 
   show(req, res) {
     const chefID = req.params.chef_id
     Chef.show(chefID, (chef) => {
       Recipe.recipesByAuthor(chef.id, (recipes) => {
-        return res.render('admin/chef-detail', { chef, recipes })
+        return res.render('admin/chefs/show', { chef, recipes })
       })
     })
   },
@@ -33,7 +33,7 @@ module.exports = {
   edit(req, res) {
     const chefID = req.params.chef_id
     Chef.show(chefID, (chef) => {
-      return res.render('admin/chef-edit', { chef })
+      return res.render('admin/chefs/edit', { chef })
     })
   },
 
@@ -64,7 +64,7 @@ module.exports = {
         return res.send('[ERROR] O Chef não pôde ser deletado! Delete todas as receitas de um chefe antes de deletá-lo.')
       } else {
         Chef.delete(chefID, () => {
-          return res.redirect('/admin/chefs')
+          return res.redirect('/admin/index')
         })
       }
     })
