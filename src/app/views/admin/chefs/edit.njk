@@ -16,16 +16,7 @@
           <button type="submit" class="save">Salvar chef</button>
         </div>
       </div>
-      <section class="form-content">
-        <div class="form-field">
-          <span>Nome do Autor</span>
-          <input type="text" name="name" value="{{chef.name}}">
-        </div>
-        <div class="form-field">
-          <span>Avatar (URL)</span>
-          <input type="text" name="avatar_url" value="{{chef.avatar_url}}">
-        </div>
-      </section>
+      {% include "admin/chefs/fields.njk" %}
     </form>
     <form method="POST" action="/admin/chefs/{{chef.id}}?_method=DELETE">
       <button type="submit" class="delete" name="delete" id="delete">Deletar</button>

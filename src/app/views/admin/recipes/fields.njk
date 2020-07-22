@@ -11,7 +11,7 @@
     <span>Autor</span>
     <select name="chef">
       {% for chef in chefs %}
-      <option value="{{chef.id}}" {% if recipe.chef_id == chef.id %}selected{% endif %}>
+      <option value="{{chef.id}}" {% if recipe.author == chef.name %}selected{% endif %}>
         {{chef.name}}
       </option>
       {% endfor %}
@@ -19,7 +19,7 @@
   </div>
   <div class="form-field" id="ingredient-list">
     <span>Ingredientes</span>
-    {% if recipes.ingredients %}
+    {% if recipe.ingredients %}
       {% for ingredient in recipe.ingredients %}
         <input type="text" value="{{ingredient}}" name="ingredients" class="ingredient-item">
       {% endfor %}
@@ -30,7 +30,7 @@
   <button class="add-ingredient" type="button">Adcionar novo ingrediente</button>
   <div class="form-field" id="preparation-list">
     <span>Modo de preparo</span>
-    {% if recipes.preparation %}
+    {% if recipe.preparation %}
       {% for step in recipe.preparation %}
         <input type="text" value="{{step}}" name="preparation" class="preparation-step">
       {% endfor %}

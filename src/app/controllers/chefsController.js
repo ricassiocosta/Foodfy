@@ -1,19 +1,24 @@
 const Chef = require('../models/Chef')
-const Recipe = require('../models/Recipe')
 
 module.exports = {
  
   listing(req, res) {
-    Chef.all((chefs) => {
+    Chef.all()
+    .then((results) => {
+      const chefs = results.rows
       return res.render('site/chefs', { chefs })
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   index(req, res) {
-    Chef.all((chefs) => {
-      return res.render('admin/chefs/index', {
-        chefs
-      })
+    Chef.all()
+    .then((results) => {
+      const chefs = results.rows
+      return res.render('admin/chefs/index', { chefs })
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
@@ -23,21 +28,41 @@ module.exports = {
 
   show(req, res) {
     const chefID = req.params.chef_id
-    Chef.show(chefID, (chef) => {
-      Recipe.recipesByAuthor(chef.id, (recipes) => {
-        return res.render('admin/chefs/show', { chef, recipes })
-      })
+    Chef.show(chefID)
+    .then((results) => {
+      const chefData = {}
+      chefData.id = results.rows[0].id
+      chefData.name = results.rows[0].name
+      chefData.avatar_url = results.rows[0].avatar_url
+      chefData.recipes_amount = results.rows[0].recipesamount
+
+      chefData.recipes = []
+      results.rows.map(chef => {{
+        let recipe = {}
+        recipe.id = chef.recipeid
+        recipe.image = chef.image
+        recipe.title = chef.title
+        chefData.recipes.push(recipe)
+      }})
+
+      return res.render('admin/chefs/show', { chefData })
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   edit(req, res) {
     const chefID = req.params.chef_id
-    Chef.show(chefID, (chef) => {
+    Chef.show(chefID)
+    .then((results) => {
+      const chef = results.rows[0]
       return res.render('admin/chefs/edit', { chef })
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
-  post(req, res) {
+  async post(req, res) {
     const keys = Object.keys(req.body)
     for(key of keys) {
       if(req.body[key] == "") {
@@ -45,28 +70,42 @@ module.exports = {
       }
     }
 
-    Chef.create(req.body, (chef) => {
-      return res.redirect(`chefs/${chef.id}`)
+    await Chef.create(req.body)
+    .then((results) => {
+      const chef = results.rows[0]
+      return res.redirect(`/admin/chefs/${chef.id}`)
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   put(req, res) {
-    Chef.update(req.body, () => {
+    Chef.update(req.body)
+    .then(() => {
       return res.redirect(`/admin/chefs/${req.body.id}`)
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   delete(req, res) {
     const chefID = req.params.chef_id
 
-    Recipe.recipesByAuthor(chefID, (recipes) => {
-      if(recipes.length > 0) {
+    Chef.show(chefID)
+    .then((results) => {
+      const recipesAmount = results.rows[0].recipesamount
+      if(recipesAmount > 0) {
         return res.send('[ERROR] O Chef não pôde ser deletado! Delete todas as receitas de um chefe antes de deletá-lo.')
       } else {
-        Chef.delete(chefID, () => {
-          return res.redirect('/admin/index')
+        Chef.delete(chefID)
+        .then(() => {
+          return res.redirect('/admin/chefs')
+        }).catch((err) => {
+          throw new Error(err)
         })
       }
+    }).catch((err) => {
+      throw new Error(err)
     })
   }
 }

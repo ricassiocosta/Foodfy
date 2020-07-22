@@ -3,97 +3,105 @@ const Chef = require('../models/Chef')
 
 module.exports = {
   mostAccessed(req, res) {
-    Recipe.mostAccessed((recipes) => {
-      return res.render('site/home', {
-        recipes
-      })
+    Recipe.mostAccessed()
+    .then((results) => {
+      const recipes = results.rows
+      return res.render('site/home', { recipes })
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   index(req, res) {
-    let { filter, page } = req.query
+    if(req.url.includes("admin")) {
+      Recipe.all()
+      .then((results) => {
+        const recipes = results.rows
+        return res.render('admin/recipes/index', { recipes })
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    } else {
+      let { filter, page } = req.query
+      page = page || 1
+      let offset = 12 * (page - 1)
 
-    page = page || 1
-    let offset = 12 * (page - 1)
+      Recipe.paginate(filter, offset)
+      .then((results) => {
 
-    const params = {
-      filter,
-      page,
-      offset,
-      callback(recipes) {
+        const recipes = results.rows
         const pagination = {
           total: Math.ceil(recipes[0].total / 12),
           page
         }
-        return res.render('site/recipes', { recipes, filter, pagination})
-      }
-    }
 
-    Recipe.paginate(params)
+        return res.render('site/recipes', { recipes, filter, pagination})
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    }
   },
 
-  indexAdmin(req, res) {
-    Recipe.all((recipes) => {
-      return res.render('admin/recipes/index', {
-        recipes
-      })
+  create(req, res) {
+    Chef.listing()
+    .then((results) => {
+      const chefs = results.rows
+      return res.render('admin/recipes/create', { chefs })
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   show(req, res) {
     const recipeID = req.params.recipe_id
-    Recipe.find(recipeID, (recipe) => {
-      if(!recipe) {
-        return res.send('receita não encontrada')
-      }
-    }) 
 
-    Recipe.show(recipeID, (recipe) => {
-      return res.render('site/recipe-detail', {
-        recipe
+    if(req.url.includes('admin')) {
+      Recipe.show(recipeID)
+      .then((results) => {
+        const recipe = results.rows[0]
+        if(recipe) {
+          return res.render('admin/recipes/show', { recipe })
+        } else {
+          return res.status(404).send('Receita não encontrada!')
+        }
+      }).catch((err) => {
+        throw new Error(err)
       })
-    })
+    } else {
+      Recipe.show(recipeID)
+      .then((results) => {
+        const recipe = results.rows[0]
+        if(recipe) {
+          return res.render('site/recipe-detail', { recipe })
+        } else {
+          return res.status(404).send('Receita não encontrada!')
+        }
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    }
   },
 
-  showAdmin(req, res) {
+  async edit(req, res) {
     const recipeID = req.params.recipe_id
-    Recipe.find(recipeID, (recipe) => {
-      if(!recipe) {
-        return res.send('receita não encontrada')
-      }
+    let recipe = {}
+    let chefs = {}
+
+    await Recipe.show(recipeID)
+    .then((results) => {
+      recipe = results.rows[0]
+    }).catch((err) => {
+      throw new Error(err)
     })
 
-    Recipe.show(recipeID, (recipe) => {
-      return res.render('admin/recipes/show', {
-        recipe
-      })
+    await Chef.listing()
+    .then((results) => {
+      chefs = results.rows
+    }).catch((err) => {
+      throw new Error(err)
     })
-  },
 
-  create(req, res) {
-    Chef.all((chefs) => {
-      return res.render('admin/recipes/create', {
-        chefs
-      })
-    })
-  },
-
-  edit(req, res) {
-    const recipeID = req.params.recipe_id
-    const recipe = Recipe.find(recipeID, (recipe) => {
-      if(!recipe) {
-        return res.send('receita não encontrada')
-      }
-    }) 
-
-    Recipe.show(recipeID, (recipe) => {
-      Chef.all((chefs) => {
-        return res.render('admin/recipes/edit', {
-          recipe,
-          chefs
-        })
-      })
-    })
+    return res.render('admin/recipes/edit', { recipe, chefs })
   },
 
   post(req, res) {
@@ -104,34 +112,54 @@ module.exports = {
       }
     }
 
-    Recipe.create(req.body, (recipe) => {
-      return res.redirect(`receitas/${recipe.id}`)
+    Recipe.create(req.body)
+    .then((results) => {
+      const recipe = results.rows[0]
+      return res.redirect(`/admin/receitas/${recipe.id}`)
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   put(req, res) {
     const recipeID = req.params.recipe_id
-    const recipe = Recipe.find(recipeID, (recipe) => {
-      if(!recipe) {
-        return res.send('receita não encontrada')
-      }
-    }) 
 
-    Recipe.update(req.body, () => {
-      return res.redirect(`/admin/receitas/${recipeID}`)
+    Recipe.show(recipeID)
+    .then((results) => {
+      const recipe = results.rows[0]
+      if(recipe) {
+        Recipe.update(req.body)
+        .then(() => {
+          return res.redirect(`/admin/receitas/${recipeID}`)
+        }).catch((err) => {
+          throw new Error(err)
+        })
+      } else {
+        return res.status(404).send('receita não encontrada')
+      }
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 
   delete(req, res) {
     const recipeID = req.params.recipe_id
-    Recipe.find(recipeID, (recipe) => {
-      if(!recipe) {
-        return res.send('receita não encontrada')
-      }
-    }) 
 
-    Recipe.delete(recipeID, () => {
-      return res.redirect('/admin/receitas')
+    Recipe.show(recipeID)
+    .then((results) => {
+      const recipe = results.rows[0]
+      if(recipe) {
+        Recipe.delete(recipeID)
+        .then(() => {
+          return res.redirect('/admin/receitas')
+        }).catch((err) => {
+          throw new Error(err)
+        })
+      } else {
+        return res.status(404).send('receita não encontrada')
+      }
+    }).catch((err) => {
+      throw new Error(err)
     })
   },
 } 

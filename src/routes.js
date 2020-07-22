@@ -11,9 +11,9 @@ routes.get('/chefs', chefsController.listing)
 routes.get('/receitas/:recipe_id', recipesController.show)
 
 routes.get('/admin', (req, res) => { return res.redirect('/admin/receitas')})
-routes.get('/admin/receitas', recipesController.indexAdmin)
+routes.get('/admin/receitas', recipesController.index)
 routes.get('/admin/receitas/criar', recipesController.create)
-routes.get('/admin/receitas/:recipe_id', recipesController.showAdmin)
+routes.get('/admin/receitas/:recipe_id', recipesController.show)
 routes.get('/admin/receitas/:recipe_id/editar', recipesController.edit)
 
 routes.post('/admin/receitas', recipesController.post)

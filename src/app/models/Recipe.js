@@ -2,7 +2,7 @@ const db = require('../../config/database')
 const { date } = require('../../utils/date')
 
 module.exports = {
-  create(data, callback) {
+  create(data) {
     const query = `
       INSERT INTO recipes (
         chef_id,
@@ -25,72 +25,39 @@ module.exports = {
       date(Date.now()).ISO
     ]
 
-    db.query(query, values, (err, results) => {
-      if(err) throw `DATABASE error! ${err}`
-
-      return callback(results.rows[0])
-    })
+    return db.query(query, values)
   },
 
-  all(callback) {
-    db.query(`
+  all() {
+    return db.query(`
       SELECT recipes.*, chefs.name AS author
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
       ORDER BY recipes.title
-      `, (err, results) => {
-      if(err) throw `DATABASE error! ${err}`
-      return callback(results.rows)
-    })
+      `)
   },
 
-  show(recipeID, callback) {
-    db.query(`
+  show(recipeID) {
+    return db.query(`
       SELECT recipes.*, chefs.name AS author
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
       WHERE recipes.id = $1
       `, 
-    [recipeID], (err, results) => {
-      if(err) throw `DATABASE error! ${err}`
-      return callback(results.rows[0])
-    })
+    [recipeID])
   },
 
-  find(recipeID, callback) {
-    db.query(`SELECT * FROM recipes WHERE recipes.id = $1`, [recipeID], (err, results) => {
-      if(err) throw `DATABASE error! ${err}`
-      return callback(results.rows[0])
-    })
-  },
-
-  recipesByAuthor(chefID, callback) {
-    db.query(`
-      SELECT recipes.*
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      WHERE recipes.chef_id = $1
-    `, [chefID], (err, results) => {
-      if(err) throw `DATABASE error! ${err}`
-      return callback(results.rows)
-    })
-  },
-
-  mostAccessed(callback) {
-    db.query(`
+  mostAccessed() {
+    return db.query(`
       SELECT recipes.*, chefs.name AS author
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
       ORDER BY recipes.id 
       LIMIT(6)
-      `, 
-      (err, results) => {
-      if(err) throw `DATABASE error! ${err}`
-      return callback(results.rows)
-    })
+      `)
   },
 
-  update(data, callback) {
+  update(data) {
     const query = `
       UPDATE recipes SET
         title=($1),
@@ -112,21 +79,14 @@ module.exports = {
       data.id
     ]
 
-    db.query(query, values, (err) => {
-      if(err) throw `DATABASE error! ${err}`
-      return callback()
-    })
+    return db.query(query, values)
   },
 
-  delete(recipeID, callback) {
-    db.query(`DELETE FROM recipes WHERE id = $1`, [recipeID], (err) => {
-      if(err) throw `DATABASE error! ${err}`
-      return callback()
-    })
+  delete(recipeID) {
+    return db.query(`DELETE FROM recipes WHERE id = $1`, [recipeID])
   },
 
-  paginate(params) {
-    const { filter, offset, callback } = params
+  paginate(filter, offset) {
 
     let query = "",
         filterQuery = "",
@@ -152,9 +112,6 @@ module.exports = {
       OFFSET $1
     `
 
-    db.query(query, [offset], (err, results) => {
-      if(err) throw `DATABASE error! ${err}`
-      callback(results.rows)
-    })
+    return db.query(query, [offset])
   }
 }
