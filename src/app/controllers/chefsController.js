@@ -30,25 +30,35 @@ module.exports = {
     const chefID = req.params.chef_id
     Chef.show(chefID)
     .then((results) => {
-      const chefData = {}
-      chefData.id = results.rows[0].id
-      chefData.name = results.rows[0].name
-      chefData.avatar_url = results.rows[0].avatar_url
-      chefData.recipes_amount = results.rows[0].recipesamount
-
-      chefData.recipes = []
-      results.rows.map(chef => {{
-        let recipe = {}
-        recipe.id = chef.recipeid
-        recipe.image = chef.image
-        recipe.title = chef.title
-        chefData.recipes.push(recipe)
-      }})
+      const chefData = extractChefDataFromDatabaseResults(results)
 
       return res.render('admin/chefs/show', { chefData })
     }).catch((err) => {
       throw new Error(err)
     })
+
+    function extractChefDataFromDatabaseResults(results) {
+      const chefData = {}
+      chefData.id = results.rows[0].id
+      chefData.name = results.rows[0].name
+      chefData.avatar_url = results.rows[0].avatar_url
+      chefData.recipes_amount = results.rows[0].recipesamount
+      chefData.recipes = populateRecipesArray(results)
+
+      return chefData
+    }
+
+    function populateRecipesArray(results) {
+      const recipesArray = []
+      results.rows.map(chef => {{
+        let recipe = {}
+        recipe.id = chef.recipeid
+        recipe.image = chef.image
+        recipe.title = chef.title
+        recipesArray.push(recipe)
+      }})
+      return recipesArray
+    }
   },
 
   edit(req, res) {
@@ -62,7 +72,7 @@ module.exports = {
     })
   },
 
-  async post(req, res) {
+  post(req, res) {
     const keys = Object.keys(req.body)
     for(key of keys) {
       if(req.body[key] == "") {
@@ -70,7 +80,7 @@ module.exports = {
       }
     }
 
-    await Chef.create(req.body)
+    Chef.create(req.body)
     .then((results) => {
       const chef = results.rows[0]
       return res.redirect(`/admin/chefs/${chef.id}`)

@@ -14,6 +14,12 @@ module.exports = {
 
   index(req, res) {
     if(req.url.includes("admin")) {
+      returnAllRecipes()
+    } else {
+      returnPaginatedRecipes()
+    }
+
+    function returnAllRecipes() {
       Recipe.all()
       .then((results) => {
         const recipes = results.rows
@@ -21,7 +27,9 @@ module.exports = {
       }).catch((err) => {
         throw new Error(err)
       })
-    } else {
+    }
+
+    function returnPaginatedRecipes() {
       let { filter, page } = req.query
       page = page || 1
       let offset = 12 * (page - 1)
@@ -55,19 +63,13 @@ module.exports = {
   show(req, res) {
     const recipeID = req.params.recipe_id
 
-    if(req.url.includes('admin')) {
-      Recipe.show(recipeID)
-      .then((results) => {
-        const recipe = results.rows[0]
-        if(recipe) {
-          return res.render('admin/recipes/show', { recipe })
-        } else {
-          return res.status(404).send('Receita não encontrada!')
-        }
-      }).catch((err) => {
-        throw new Error(err)
-      })
+    if(!req.url.includes('admin')) {
+      returnSiteView()
     } else {
+      returnAdminView()
+    }
+    
+    function returnSiteView() {
       Recipe.show(recipeID)
       .then((results) => {
         const recipe = results.rows[0]
@@ -80,28 +82,48 @@ module.exports = {
         throw new Error(err)
       })
     }
+
+    function returnAdminView() {
+      Recipe.show(recipeID)
+      .then((results) => {
+        const recipe = results.rows[0]
+        if(recipe) {
+          return res.render('admin/recipes/show', { recipe })
+        } else {
+          return res.status(404).send('Receita não encontrada!')
+        }
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    }
   },
 
-  async edit(req, res) {
-    const recipeID = req.params.recipe_id
-    let recipe = {}
-    let chefs = {}
-
-    await Recipe.show(recipeID)
-    .then((results) => {
-      recipe = results.rows[0]
-    }).catch((err) => {
-      throw new Error(err)
+  edit(req, res) {
+    getRecipeData(req.params.recipe_id)
+    .then((recipeData) => {
+      getChefsListing()
+      .then((chefsListing) => {
+        return res.render('admin/recipes/edit', { recipe: recipeData, chefs:chefsListing })
+      })
     })
 
-    await Chef.listing()
-    .then((results) => {
-      chefs = results.rows
-    }).catch((err) => {
-      throw new Error(err)
-    })
+    async function getRecipeData(recipeID) {
+      return Recipe.show(recipeID)
+      .then((results) => {
+        return results.rows[0]
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    }
 
-    return res.render('admin/recipes/edit', { recipe, chefs })
+    async function getChefsListing() {
+      return Chef.listing()
+      .then((results) => {
+        return results.rows
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    }
   },
 
   post(req, res) {
