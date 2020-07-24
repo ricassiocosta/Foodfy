@@ -6,18 +6,16 @@ module.exports = {
     const query = `
       INSERT INTO recipes (
         chef_id,
-        image,
         title,
         ingredients,
         preparation,
         information,
         created_at
-      ) VALUES ( $1, $2, $3, $4, $5, $6, $7 )
+      ) VALUES ( $1, $2, $3, $4, $5, $6 )
       RETURNING ID
     `
     const values = [
       data.chef,
-      data.image,
       data.title,
       typeof data.ingredients === "string" ? [data.ingredients] : data.ingredients,
       typeof data.preparation === "string" ? [data.preparation] : data.preparation,
