@@ -61,8 +61,14 @@ module.exports = {
     })
   },
 
-  show(req, res) {
+  async show(req, res) {
     const recipeID = req.params.recipe_id
+
+    let results = await Recipe.files(recipeID) 
+    const files = results.rows.map(recipe => ({
+      ...recipe,
+      src:`${req.protocol}://${req.headers.host}${recipe.path.replace("public", "")}`
+    }))
 
     if(!req.url.includes('admin')) {
       returnSiteView()
@@ -89,7 +95,7 @@ module.exports = {
       .then((results) => {
         const recipe = results.rows[0]
         if(recipe) {
-          return res.render('admin/recipes/show', { recipe })
+          return res.render('admin/recipes/show', { recipe, files })
         } else {
           return res.status(404).send('Receita não encontrada!')
         }
@@ -100,11 +106,18 @@ module.exports = {
   },
 
   edit(req, res) {
-    getRecipeData(req.params.recipe_id)
+    const recipeID = req.params.recipe_id
+
+    getRecipeData(recipeID)
     .then((recipeData) => {
       getChefsListing()
-      .then((chefsListing) => {
-        return res.render('admin/recipes/edit', { recipe: recipeData, chefs:chefsListing })
+      .then( async (chefsListing) => {
+        let results = await Recipe.files(recipeID) 
+        const files = results.rows.map(recipe => ({
+          ...recipe,
+          src:`${req.protocol}://${req.headers.host}${recipe.path.replace("public", "")}`
+        }))
+        return res.render('admin/recipes/edit', { recipe: recipeData, chefs:chefsListing, files })
       })
     })
 
@@ -153,25 +166,35 @@ module.exports = {
     })
   },
 
-  put(req, res) {
+  async put(req, res) {
     const recipeID = req.params.recipe_id
 
-    Recipe.show(recipeID)
-    .then((results) => {
-      const recipe = results.rows[0]
-      if(recipe) {
-        Recipe.update(req.body)
-        .then(() => {
-          return res.redirect(`/admin/receitas/${recipeID}`)
-        }).catch((err) => {
-          throw new Error(err)
-        })
-      } else {
-        return res.status(404).send('receita não encontrada')
-      }
-    }).catch((err) => {
-      throw new Error(err)
-    })
+    if(req.files.length != 0) {
+      const newFilesPromise = req.files.map(file => File.create(file, req.body.id))
+      await Promise.all(newFilesPromise)
+    }
+
+    if(req.body.removed_files) {
+      const removedFiles = req.body.removed_files.split(",")
+      const lastIndex = removedFiles.length - 1
+      removedFiles.splice(lastIndex, 1)
+
+      const removedFilesPromise = removedFiles.map(id => File.delete(id))
+      await Promise.all(removedFilesPromise)
+    }
+
+    let results = await Recipe.show(recipeID)
+    const recipe = results.rows[0]
+    if(recipe) {
+      Recipe.update(req.body)
+      .then(() => {
+        return res.redirect(`/admin/receitas/${recipeID}`)
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    } else {
+      return res.status(404).send('receita não encontrada')
+    }
   },
 
   delete(req, res) {

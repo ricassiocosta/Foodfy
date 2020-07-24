@@ -34,4 +34,19 @@ module.exports = {
       return db.query(query, values)
     })
   },
+
+  async delete(fileId) {
+    try {
+      let results = await db.query(`SELECT * FROM files WHERE id = $1`, [fileId])
+      const file = results.rows[0]
+
+      fs.unlinkSync(file.path)
+      db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [fileId], (err) => {
+        if(err) throw new Error(err)
+        return db.query(`DELETE FROM files WHERE id = $1`, [fileId])
+      })
+    } catch(err) {
+      console.log(err)
+    }
+  }
 }

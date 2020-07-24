@@ -45,6 +45,16 @@ module.exports = {
     [recipeID])
   },
 
+  files(recipeID) {
+    return db.query(`
+      SELECT files.id, files.name, files.path
+      FROM files
+      LEFT JOIN recipe_files ON(files.id = recipe_files.file_id)
+      LEFT JOIN recipes ON(recipe_files.recipe_id = recipes.id)
+      WHERE recipes.id = $1
+    `, [recipeID])
+  },
+
   mostAccessed() {
     return db.query(`
       SELECT recipes.*, chefs.name AS author
@@ -59,20 +69,19 @@ module.exports = {
     const query = `
       UPDATE recipes SET
         title=($1),
-        image=($2),
-        chef_id=($3),
-        ingredients=($4),
-        preparation=($5),
-        information=($6)
+        chef_id=($2),
+        ingredients=($3),
+        preparation=($4),
+        information=($5)
       WHERE
-        id = $7
+        id = $6
     `
+
     const values = [
       data.title,
-      data.image,
       data.chef,
-      data.ingredients.length > 1 ? data.ingredients : [data.ingredients],
-      data.preparation.length > 1 ? data.preparation : [data.preparation],
+      typeof data.ingredients === "string" ? [data.ingredients] : data.ingredients,
+      typeof data.preparation === "string" ? [data.preparation] : data.preparation,
       data.information,
       data.id
     ]

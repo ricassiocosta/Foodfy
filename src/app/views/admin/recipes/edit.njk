@@ -5,7 +5,7 @@
 
 {% block content %}
   <div class="recipe-edit">
-    <form method="POST" action="/admin/receitas/{{recipe.id}}?_method=PUT">
+    <form method="POST" action="/admin/receitas/{{recipe.id}}?_method=PUT" enctype="multipart/form-data">
       <input type="hidden" name="id" value="{{recipe.id}}">
       <div class="header-edit">
         <div>
