@@ -1,11 +1,29 @@
 <section class="form-content">
+  <div class="form-field photos-upload">
+    <label for="photos-input"><i class="material-icons">add</i></label>
+    <div id="photos-preview">
+      {% if files %}
+        {% for image in files %}
+          <div class="photo" id="{{image.id}}">
+            <img src="{{image.src}}" alt="{{image.name}}">
+            <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">close</i>
+          </div>
+        {% endfor %}
+        <input type="hidden" name="removed_files">
+      {% endif %}
+    </div>
+    <input 
+      type="file"
+      id="photos-input"
+      name="photos"
+      accept="image/*"
+      multiple
+      onchange="PhotosUpload.handlePhotoInput(event)"
+    >
+  </div>
   <div class="form-field">
     <span>Título da receita</span>
     <input type="text" value="{{recipe.title}}" name="title">
-  </div>
-  <div class="form-field">
-    <span>Imagem da receita</span>
-    <input type="text" value="{{recipe.image}}" name="image">
   </div>
   <div class="form-field">
     <span>Autor</span>

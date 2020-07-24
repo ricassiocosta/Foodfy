@@ -267,6 +267,7 @@ footer span {
 }
 
 .form-field {
+  width: 100%;
   margin: 20px 0;
   display: flex;
   flex-direction: column;
@@ -284,6 +285,77 @@ footer span {
   border-radius: 4px;
   padding: 8px;
   margin: 5px 0;
+}
+
+.form-field > label {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  color: #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-field > label:hover {
+  background-color: #eee;
+}
+
+.form-field > input[type="file"] {
+  display: none;
+}
+
+.form-field.photos-upload {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+#photos-preview {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  width: 100%;
+  margin: 8px 0;
+}
+
+#photos-preview img { 
+  width: 150px;
+  height: 150px;
+  border-radius: 4px;
+
+  object-fit: cover;
+  object-position: center;
+
+}
+
+#photos-preview .photo {
+  position: relative;
+
+}
+
+#photos-preview .photo i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.8);
+  color: red;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 500%;
+  cursor: pointer;
+  transition: opacity 200ms;
+  opacity: 0;
+}
+
+#photos-preview .photo:hover i {
+  opacity: 1;
 }
 
 .form-field textarea {
