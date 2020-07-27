@@ -191,3 +191,16 @@ const PhotosUpload = {
     photoContainer.remove()
   }
 }
+
+const ImageGallery = {
+  highlight: document.querySelector('.recipe-detail .highlight > img'),
+  previews: document.querySelectorAll('.gallery-preview img'),
+  setImage(event) {
+    const { target } = event
+
+    ImageGallery.previews.forEach(preview => preview.classList.remove('highlighted', 'selected'))
+    target.classList.add('selected')
+
+    ImageGallery.highlight.src = target.src
+  }
+}

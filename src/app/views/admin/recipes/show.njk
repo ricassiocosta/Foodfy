@@ -6,8 +6,22 @@
 {% block content %}
   <div class="recipe-detail">
     <a href="/admin/receitas/{{recipe.id}}/editar">Editar receita</a>
-    <div class="recipe-image">
-      <img src="{{files[0].src}}" alt="{{files[0].name}}">
+    <div class="recipe-gallery">
+      <div class="highlight">
+        <img src="{{files[0].src}}" alt="recipe.title" class="highlighted">
+      </div>
+      <div class="gallery-preview">
+      {% for image in files %}
+        <img 
+          src="{{image.src}}" 
+          alt="{{recipe.title}}"
+          {% if loop.index0 == 0 %}
+          class="selected"
+          {% endif %}
+          onclick="ImageGallery.setImage(event)"
+        >
+      {% endfor %}
+      </div>
     </div>
     
     <div class="recipe-title">
