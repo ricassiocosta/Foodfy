@@ -48,5 +48,14 @@ module.exports = {
     } catch(err) {
       console.log(err)
     }
+  },
+
+  translateImagesURL(req, recipes) {
+    recipes.map((recipe, index) => {
+      recipes[index].image = {
+        name: `${recipe.title}`,
+        src: `${req.protocol}://${req.headers.host}${recipe.image.replace("public", "")}`
+      }
+    })
   }
 }
