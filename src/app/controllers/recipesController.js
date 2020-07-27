@@ -16,57 +16,40 @@ module.exports = {
   async index(req, res) {
     if(req.url.includes("admin")) {
       const recipes = await returnAllRecipes()
-      res.render('admin/recipes/index', { recipes })
+      translateImagesURL(recipes)
+      return res.render('admin/recipes/index', { recipes })
     } else {
-      returnPaginatedRecipes()
+      const { recipes, filter, pagination } = await returnPaginatedRecipes()
+      translateImagesURL(recipes)
+      return res.render('site/recipes', { recipes, filter, pagination})
     }
 
     async function returnAllRecipes() {
       let results = await Recipe.all()
       const recipes = results.rows
-      // recipes.map((recipe, index) => {
-      //   Recipe.files(recipe.id)
-      //   .then((results) => {
-      //     const recipeFiles = results.rows[0]
-      //     recipes[index].image = {
-      //       name: `${recipeFiles.name}`,
-      //       src: `${req.protocol}://${req.headers.host}${recipeFiles.path.replace("public", "")}`
-      //     }
-      //   }).catch((err) => {
-      //     throw new Error(err)
-      //   })
-      // })
       return recipes
     }
 
-    function returnPaginatedRecipes() {
+    async function returnPaginatedRecipes() {
       let { filter, page } = req.query
       page = page || 1
       let offset = 12 * (page - 1)
 
-      Recipe.paginate(filter, offset)
-      .then((results) => {
+      let results = await Recipe.paginate(filter, offset)
+      const recipes = results.rows
+      const pagination = {
+        total: Math.ceil(recipes[0].total / 12),
+        page
+      }
+      return { recipes, filter, pagination }
+    }
 
-        const recipes = results.rows
-        recipes.map(async (recipe, index) => {
-          const results = await Recipe.files(recipe.id)
-          const recipeFiles = results.rows[0]
-          recipes[index].image = {
-            name: `${recipeFiles.name}`,
-            src: `${req.protocol}://${req.headers.host}${recipeFiles.path.replace("public", "")}`
-          }
-        })
-
-        const pagination = {
-          total: Math.ceil(recipes[0].total / 12),
-          page
+    function translateImagesURL(recipes) {
+      recipes.map((recipe, index) => {
+        recipes[index].image = {
+          name: `${recipe.title}`,
+          src: `${req.protocol}://${req.headers.host}${recipe.image.replace("public", "")}`
         }
-        setTimeout(() => {
-          return res.render('site/recipes', { recipes, filter, pagination})
-        }, 500)
-
-      }).catch((err) => {
-        throw new Error(err)
       })
     }
   },

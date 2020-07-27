@@ -28,7 +28,7 @@ module.exports = {
 
   all() {
     return db.query(`
-      SELECT recipes.id, recipes.title, files.path AS image
+      SELECT DISTINCT ON (recipes.title) recipes.*, files.path AS image
       FROM recipes
       LEFT JOIN recipe_files ON (recipes.id = recipe_files.recipe_id)
       LEFT JOIN files ON (recipe_files.file_id = files.id)
@@ -113,8 +113,10 @@ module.exports = {
     }
 
     query = `
-      SELECT recipes.*, ${totalQuery}
+      SELECT DISTINCT ON (recipes.title) recipes.*, ${totalQuery}, files.path AS image
       FROM recipes
+      LEFT JOIN recipe_files ON (recipes.id = recipe_files.recipe_id)
+      LEFT JOIN files ON (recipe_files.file_id = files.id)
       ${filterQuery}
       LIMIT 12
       OFFSET $1
