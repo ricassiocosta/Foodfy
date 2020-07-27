@@ -1,10 +1,25 @@
 <section class="form-content">
-  <div class="form-field">
-    <span>Nome do Autor</span>
-    <input type="text" name="name" value="{{chef.name}}">
+  <div class="form-field chef_avatar">
+    {% if file.image %}
+      <img src="{{file.image.src}}" alt="{{chef.name}}" class="avatar">
+    {% else %}
+      <label for="avatar" class="avatar_input">
+        <span>
+          Selecione um avatar
+        </span>
+        <img src="" alt="" id="chef_avatar" class="hidden">
+      </label>
+    {% endif %}
+    <input 
+      type="file"
+      id="avatar"
+      name="avatar"
+      accept="image/*"
+      onchange="PhotosUpload.previewAvatar(event)"
+    >
   </div>
   <div class="form-field">
-    <span>Avatar (URL)</span>
-    <input type="text" name="avatar_url" value="{{chef.avatar_url}}">
+    <span>Nome do Chef</span>
+    <input type="text" name="name" value="{{chef.name}}">
   </div>
 </section>

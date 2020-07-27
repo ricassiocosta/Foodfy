@@ -189,6 +189,15 @@ const PhotosUpload = {
     }
 
     photoContainer.remove()
+  },
+
+  previewAvatar(event) {
+    const span = document.querySelector('.avatar_input').firstElementChild
+    span.innerHTML = ""
+    
+    const chefAvatar = document.querySelector('#chef_avatar')
+    chefAvatar.src = URL.createObjectURL(event.target.files[0])
+    chefAvatar.classList.remove('hidden')
   }
 }
 
