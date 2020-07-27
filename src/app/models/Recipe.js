@@ -58,9 +58,11 @@ module.exports = {
 
   mostAccessed() {
     return db.query(`
-      SELECT recipes.*, chefs.name AS author
+      SELECT DISTINCT ON (recipes.id) recipes.*, files.path AS image, chefs.name AS author
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      LEFT JOIN recipe_files ON (recipes.id = recipe_files.recipe_id)
+      LEFT JOIN files ON (recipe_files.file_id = files.id)
       ORDER BY recipes.id 
       LIMIT(6)
       `)

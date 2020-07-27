@@ -3,14 +3,26 @@ const Chef = require('../models/Chef')
 const File = require('../models/File')
 
 module.exports = {
-  mostAccessed(req, res) {
-    Recipe.mostAccessed()
-    .then((results) => {
+  async mostAccessed(req, res) {
+    const recipes = await returnMostAccessedRecipes()
+    translateImagesURL(recipes)
+    
+    return res.render('site/home', { recipes })
+    
+    async function returnMostAccessedRecipes() {
+      let results = await Recipe.mostAccessed()
       const recipes = results.rows
-      return res.render('site/home', { recipes })
-    }).catch((err) => {
-      throw new Error(err)
-    })
+      return recipes
+    }
+
+    function translateImagesURL(recipes) {
+      recipes.map((recipe, index) => {
+        recipes[index].image = {
+          name: `${recipe.title}`,
+          src: `${req.protocol}://${req.headers.host}${recipe.image.replace("public", "")}`
+        }
+      })
+    }
   },
 
   async index(req, res) {
@@ -84,7 +96,7 @@ module.exports = {
       .then((results) => {
         const recipe = results.rows[0]
         if(recipe) {
-          return res.render('site/recipe-detail', { recipe })
+          return res.render('site/recipe-detail', { recipe, files })
         } else {
           return res.status(404).send('Receita não encontrada!')
         }

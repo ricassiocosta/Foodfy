@@ -8,8 +8,22 @@
 
 {% block content %}
   <div class="recipe-detail">
-    <div class="recipe-image">
-      <img src="{{recipe.image}}" alt="{{recipe.title}}">
+    <div class="recipe-gallery">
+      <div class="highlight">
+        <img src="{{files[0].src}}" alt="recipe.title" class="highlighted">
+      </div>
+      <div class="gallery-preview">
+      {% for image in files %}
+        <img 
+          src="{{image.src}}" 
+          alt="{{recipe.title}}"
+          {% if loop.index0 == 0 %}
+          class="selected"
+          {% endif %}
+          onclick="ImageGallery.setImage(event)"
+        >
+      {% endfor %}
+      </div>
     </div>
     
     <div class="recipe-title">
