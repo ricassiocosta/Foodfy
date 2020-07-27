@@ -36,13 +36,20 @@ module.exports = {
 
   show(chefID) {
     return db.query(`
-      SELECT chefs.*, (SELECT count(*) FROM recipes WHERE recipes.chef_id = chefs.id) AS recipesAmount,
-      recipes.id AS recipeid, recipes.image, recipes.title
+      SELECT chefs.*, (SELECT count(*) FROM recipes WHERE recipes.chef_id = chefs.id) AS recipesAmount
       FROM chefs
-      LEFT JOIN recipes ON (chefs.id = recipes.chef_id)
       WHERE chefs.id = $1
-      GROUP BY chefs.id, recipes.id
       `, [chefID])
+  },
+
+  getRecipes(chefID) {
+    return db.query(`
+      SELECT recipes.id, recipes.title, files.path AS image
+      FROM recipes
+      LEFT JOIN recipe_files ON(recipes.id = recipe_files.recipe_id)
+      LEFT JOIN files ON(recipe_files.file_id = files.id)
+      WHERE recipes.chef_id = $1
+    `, [chefID])
   },
 
   update(data) {

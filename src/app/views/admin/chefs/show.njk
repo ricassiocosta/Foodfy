@@ -7,27 +7,27 @@
 
 {% block content %}
   <div>
-    <a href="/admin/chefs/{{chefData.id}}/editar" class="create-chef">Editar Chef</a>
-    <h2 style="margin-bottom: 50px">Chef: {{chefData.name}}</h2>
+    <a href="/admin/chefs/{{chef.id}}/editar" class="create-chef">Editar Chef</a>
+    <h2 style="margin-bottom: 50px">Chef: {{chef.name}}</h2>
   </div>
   <div class="chef-detail">
     <div class="chef-info">
-      <img src="{{chefData.avatar_url}}" alt="{{chefData.name}}">
-      <h2>{{chefData.name}}</h2>
+      <img src="{{chef.avatar_url}}" alt="{{chef.name}}">
+      <h2>{{chef.name}}</h2>
       <span>
-      {% if chefData.recipes_amount <= 1 %}
-        {{chefData.recipes_amount}} receita
+      {% if chef.recipes_amount <= 1 %}
+        {{chef.recipes_amount}} receita
       {% endif %}
-      {% if chefData.recipes_amount > 1 %}
-        {{chefData.recipes_amount}} receitas
+      {% if chef.recipes_amount > 1 %}
+        {{chef.recipes_amount}} receitas
       {% endif %}
       </span>
     </div>
     <h2 id="chef-recipes">Receitas</h2>
     <div class="recipes-adminview">
-      {% for recipe in chefData.recipes %}
+      {% for recipe in recipes %}
       <div class="recipe-adminview">
-        <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
+        <img src="{{recipe.image.src}}" alt="Imagem de {{recipe.title}}">
         <div>
           <span>{{recipe.title}}</span>
           <p>{{chef.name}}</p>

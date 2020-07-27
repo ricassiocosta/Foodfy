@@ -1,4 +1,5 @@
 const Chef = require('../models/Chef')
+const File = require('../models/File')
 
 module.exports = {
   create(req, res) {
@@ -42,39 +43,17 @@ module.exports = {
     })
   },
 
-  show(req, res) {
+  async show(req, res) {
     const chefID = req.params.chef_id
-    Chef.show(chefID)
-    .then((results) => {
-      const chefData = extractChefDataFromDatabaseResults(results)
+  
+    let results = await Chef.show(chefID)
+    const chef = results.rows[0]
 
-      return res.render('admin/chefs/show', { chefData })
-    }).catch((err) => {
-      throw new Error(err)
-    })
-
-    function extractChefDataFromDatabaseResults(results) {
-      const chefData = {}
-      chefData.id = results.rows[0].id
-      chefData.name = results.rows[0].name
-      chefData.avatar_url = results.rows[0].avatar_url
-      chefData.recipes_amount = results.rows[0].recipesamount
-      chefData.recipes = populateRecipesArray(results)
-
-      return chefData
-    }
-
-    function populateRecipesArray(results) {
-      const recipesArray = []
-      results.rows.map(chef => {{
-        let recipe = {}
-        recipe.id = chef.recipeid
-        recipe.image = chef.image
-        recipe.title = chef.title
-        recipesArray.push(recipe)
-      }})
-      return recipesArray
-    }
+    results = await Chef.getRecipes(chefID)
+    const recipes = results.rows
+    
+    File.translateImagesURL(req, recipes)
+    return res.render('admin/chefs/show', { chef, recipes })
   },
 
   edit(req, res) {
