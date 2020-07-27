@@ -28,9 +28,10 @@ module.exports = {
 
   all() {
     return db.query(`
-      SELECT recipes.*, chefs.name AS author
+      SELECT recipes.id, recipes.title, files.path AS image
       FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      LEFT JOIN recipe_files ON (recipes.id = recipe_files.recipe_id)
+      LEFT JOIN files ON (recipe_files.file_id = files.id)
       ORDER BY recipes.title
       `)
   },

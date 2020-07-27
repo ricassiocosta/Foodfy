@@ -13,21 +13,30 @@ module.exports = {
     })
   },
 
-  index(req, res) {
+  async index(req, res) {
     if(req.url.includes("admin")) {
-      returnAllRecipes()
+      const recipes = await returnAllRecipes()
+      res.render('admin/recipes/index', { recipes })
     } else {
       returnPaginatedRecipes()
     }
 
-    function returnAllRecipes() {
-      Recipe.all()
-      .then((results) => {
-        const recipes = results.rows
-        return res.render('admin/recipes/index', { recipes })
-      }).catch((err) => {
-        throw new Error(err)
-      })
+    async function returnAllRecipes() {
+      let results = await Recipe.all()
+      const recipes = results.rows
+      // recipes.map((recipe, index) => {
+      //   Recipe.files(recipe.id)
+      //   .then((results) => {
+      //     const recipeFiles = results.rows[0]
+      //     recipes[index].image = {
+      //       name: `${recipeFiles.name}`,
+      //       src: `${req.protocol}://${req.headers.host}${recipeFiles.path.replace("public", "")}`
+      //     }
+      //   }).catch((err) => {
+      //     throw new Error(err)
+      //   })
+      // })
+      return recipes
     }
 
     function returnPaginatedRecipes() {
@@ -39,12 +48,23 @@ module.exports = {
       .then((results) => {
 
         const recipes = results.rows
+        recipes.map(async (recipe, index) => {
+          const results = await Recipe.files(recipe.id)
+          const recipeFiles = results.rows[0]
+          recipes[index].image = {
+            name: `${recipeFiles.name}`,
+            src: `${req.protocol}://${req.headers.host}${recipeFiles.path.replace("public", "")}`
+          }
+        })
+
         const pagination = {
           total: Math.ceil(recipes[0].total / 12),
           page
         }
+        setTimeout(() => {
+          return res.render('site/recipes', { recipes, filter, pagination})
+        }, 500)
 
-        return res.render('site/recipes', { recipes, filter, pagination})
       }).catch((err) => {
         throw new Error(err)
       })

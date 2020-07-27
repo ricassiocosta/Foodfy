@@ -19,7 +19,7 @@
   <div {% if recipes %} class="recipes expanded" {% else %} class="recipes" {% endif %}>
     {% for recipe in recipes %}
       <a class="recipe" href="/receitas/{{recipe.id}}">
-        <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
+        <img src="{{recipe.image.src}}" alt="Imagem de {{recipe.title}}">
         <span>{{recipe.title}}</span>
         <p>{{recipe.author}}</p>
       </a>
