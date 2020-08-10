@@ -1,5 +1,6 @@
 const db = require('../../config/database')
 const { date } = require('../../utils/date')
+const File = require('../models/File')
 
 module.exports = {
   create(data) {
@@ -92,7 +93,8 @@ module.exports = {
     return db.query(query, values)
   },
 
-  delete(recipeID) {
+  async delete(recipeID) {
+    await File.deleteRecipeImages(recipeID)
     return db.query(`DELETE FROM recipes WHERE id = $1`, [recipeID])
   },
 

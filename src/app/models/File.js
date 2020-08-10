@@ -35,15 +35,23 @@ module.exports = {
     })
   },
 
-  async deleteRecipeImages(fileId) {
+  async deleteRecipeImages(recipeId) {
     try {
-      let results = await db.query(`SELECT * FROM files WHERE id = $1`, [fileId])
-      const file = results.rows[0]
+      let results = await db.query(
+        `SELECT files.* 
+        FROM files
+        LEFT JOIN recipe_files ON (files.id = recipe_files.file_id)
+        LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
+        WHERE recipes.id = $1`
+        , [recipeId])
+      const files = results.rows
 
-      fs.unlinkSync(file.path)
-      db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [fileId], (err) => {
-        if(err) throw new Error(err)
-        return db.query(`DELETE FROM files WHERE id = $1`, [fileId])
+      files.map(file => {
+        fs.unlinkSync(file.path)
+        db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [file.id], (err) => {
+          if(err) throw new Error(err)
+          return db.query(`DELETE FROM files WHERE id = $1`, [file.id])
+        })
       })
     } catch(err) {
       console.log(err)

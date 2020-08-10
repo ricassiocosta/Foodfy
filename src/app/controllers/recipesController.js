@@ -29,7 +29,7 @@ module.exports = {
     .then(async (results) => {
       const recipe = results.rows[0]
       const filesPromise = req.files.map(file => {
-        File.create(file, recipe.id)
+        File.createRecipeImages(file, recipe.id)
       })
       await Promise.all(filesPromise)
 

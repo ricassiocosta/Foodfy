@@ -42,7 +42,11 @@ module.exports = {
     Chef.all()
     .then((results) => {
       const chefs = results.rows
-      return res.render('admin/chefs/index', { chefs })
+      const chefsListing = chefs.map(chef => ({
+        ...chef,
+        avatar_url:`${req.protocol}://${req.headers.host}${chef.avatar_url.replace("public", "")}`
+      }))
+      return res.render('admin/chefs/index', { chefs: chefsListing })
     }).catch((err) => {
       throw new Error(err)
     })
