@@ -89,6 +89,10 @@ module.exports = {
     })
   },
 
+  updateChefAvatar() {
+
+  },
+
   translateImagesURL(req, recipes) {
     recipes.map((recipe, index) => {
       recipes[index].image = {

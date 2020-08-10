@@ -1,7 +1,8 @@
 <section class="form-content">
   <div class="form-field chef_avatar">
-    {% if file.image %}
-      <img src="{{file.image.src}}" alt="{{chef.name}}" class="avatar">
+    {% if chef.avatar_url %}
+      <label for="avatar" class="avatar_input">
+      <img src="{{chef.avatar_url}}" alt="{{chef.name}}" id="chef_avatar">
     {% else %}
       <label for="avatar" class="avatar_input">
         <span>

@@ -49,7 +49,7 @@ module.exports = {
 
   getRecipes(chefID) {
     return db.query(`
-      SELECT recipes.id, recipes.title, files.path AS image
+      SELECT DISTINCT ON (recipes.title) recipes.id, recipes.title, files.path AS image
       FROM recipes
       LEFT JOIN recipe_files ON(recipes.id = recipe_files.recipe_id)
       LEFT JOIN files ON(recipe_files.file_id = files.id)

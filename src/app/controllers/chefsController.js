@@ -73,7 +73,11 @@ module.exports = {
     const chefID = req.params.chef_id
     Chef.show(chefID)
     .then((results) => {
-      const chef = results.rows[0]
+      const chefInfo = results.rows[0]
+      const chef = {
+        ...chefInfo,
+        avatar_url: `${req.protocol}://${req.headers.host}${chefInfo.avatar_url.replace("public", "")}`
+      }
       return res.render('admin/chefs/edit', { chef })
     }).catch((err) => {
       throw new Error(err)
