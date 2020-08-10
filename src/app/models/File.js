@@ -105,6 +105,24 @@ module.exports = {
     }
   },
 
+  async deleteFile(fileId) {
+    try {
+      let results = await db.query(
+        `SELECT files.* 
+        FROM files
+        WHERE files.id = $1`
+        , [fileId])
+      const file = results.rows[0]
+      fs.unlinkSync(file.path)
+      db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [file.id], (err) => {
+        if(err) throw new Error(err)
+        return db.query(`DELETE FROM files WHERE id = $1`, [file.id])
+      })
+    } catch(err) {
+      console.log(err)
+    }
+  },
+
   translateImagesURL(req, recipes) {
     recipes.map((recipe, index) => {
       recipes[index].image = {

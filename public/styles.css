@@ -358,6 +358,10 @@ footer span {
   gap: 8px;
 }
 
+.form-field #photos-input {
+  display: none;
+}
+
 #photos-preview {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

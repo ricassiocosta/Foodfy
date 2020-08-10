@@ -169,7 +169,7 @@ module.exports = {
       const lastIndex = removedFiles.length - 1
       removedFiles.splice(lastIndex, 1)
 
-      const removedFilesPromise = removedFiles.map(id => File.deleteRecipeImages(id))
+      const removedFilesPromise = removedFiles.map(id => File.deleteFile(id))
       await Promise.all(removedFilesPromise)
     }
 
