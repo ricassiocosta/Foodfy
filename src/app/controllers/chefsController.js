@@ -52,7 +52,11 @@ module.exports = {
     const chefID = req.params.chef_id
   
     let results = await Chef.show(chefID)
-    const chef = results.rows[0]
+    const chefInfo = results.rows[0]
+    const chef = {
+      ...chefInfo,
+      avatar_url: `${req.protocol}://${req.headers.host}${chefInfo.avatar_url.replace("public", "")}`
+    }
 
     results = await Chef.getRecipes(chefID)
     const recipes = results.rows

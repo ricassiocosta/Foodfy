@@ -36,8 +36,14 @@ module.exports = {
 
   show(chefID) {
     return db.query(`
-      SELECT chefs.*, (SELECT count(*) FROM recipes WHERE recipes.chef_id = chefs.id) AS recipesAmount
+      SELECT chefs.*, 
+        (SELECT count(*) 
+          FROM recipes 
+          WHERE recipes.chef_id = chefs.id
+        ) AS recipesAmount,
+        files.path AS avatar_url
       FROM chefs
+      LEFT JOIN files ON (chefs.file_id = files.id)
       WHERE chefs.id = $1
       `, [chefID])
   },
