@@ -89,8 +89,20 @@ module.exports = {
     })
   },
 
-  updateChefAvatar() {
-
+  async deleteChefAvatar(chefId) {
+    try {
+      let results = await db.query(
+        `SELECT files.* 
+        FROM chefs
+        LEFT JOIN files ON (chefs.file_id = files.id)
+        WHERE chefs.id = $1`
+        , [chefId])
+      const avatar = results.rows[0]
+      fs.unlinkSync(avatar.path)
+      return db.query(`DELETE FROM files WHERE id = $1`, [avatar.id])
+    } catch(err) {
+      console.log(err)
+    }
   },
 
   translateImagesURL(req, recipes) {

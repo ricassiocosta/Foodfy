@@ -85,7 +85,18 @@ module.exports = {
   },
 
   put(req, res) {
-    Chef.update(req.body)
+    const keys = Object.keys(req.body)
+    for(key of keys) {
+      if(req.body[key] == "") {
+        return res.send('Por favor, preencha todos os campos!')
+      }
+    }
+
+    if(req.files.length == 0) {
+      return res.send('Por favor, envie uma imagem de avatar!')
+    }
+
+    Chef.update(req.body, req.files[0])
     .then(() => {
       return res.redirect(`/admin/chefs/${req.body.id}`)
     }).catch((err) => {

@@ -333,8 +333,8 @@ footer span {
 
   object-fit: cover;
   object-position: center;
+  
 }
-
 .form-field #chef_avatar:hover {
   opacity: 0.6;
 }
@@ -347,7 +347,7 @@ footer span {
   background-color: #eee;
 }
 
-.form-field > input[type="file"] {
+.form-field > input#avatar {
   display: none;
 }
 

@@ -1,5 +1,6 @@
 const db = require('../../config/database')
 const { date } = require('../../utils/date')
+const File = require('../models/File')
 
 module.exports = {
   create(data) {
@@ -57,19 +58,20 @@ module.exports = {
     `, [chefID])
   },
 
-  update(data) {
+  async update(data, avatar) {
     const query = `
       UPDATE chefs SET
-        name=($1),
-        avatar_url=($2)
+        name=($1)
       WHERE
-        id = $3
+        id = $2
     `
     const values = [
       data.name,
-      data.avatar_url,
       data.id
     ]
+
+    await File.deleteChefAvatar(data.id)
+    File.createChefAvatar(avatar, data.id)
 
     return db.query(query, values)
   },
