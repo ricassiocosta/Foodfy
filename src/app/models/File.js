@@ -2,7 +2,7 @@ const db = require('../../config/database')
 const fs = require('fs')
 
 module.exports = {
-  create(file, recipeId) {
+  createRecipeImages(file, recipeId) {
     const query = `
       INSERT INTO files (
         name,
@@ -35,7 +35,7 @@ module.exports = {
     })
   },
 
-  async delete(fileId) {
+  async deleteRecipeImages(fileId) {
     try {
       let results = await db.query(`SELECT * FROM files WHERE id = $1`, [fileId])
       const file = results.rows[0]
