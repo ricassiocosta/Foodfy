@@ -20,8 +20,9 @@ module.exports = {
 
   all() {
     return db.query(`
-    SELECT chefs.*, (SELECT count(*) FROM recipes WHERE recipes.chef_id = chefs.id) AS recipesamount
+    SELECT chefs.*, (SELECT count(*) FROM recipes WHERE recipes.chef_id = chefs.id) AS recipesamount, files.path AS avatar_url
     FROM chefs 
+    LEFT JOIN files ON (chefs.file_id = files.id)
     ORDER BY chefs.name
     `)
   },
@@ -38,7 +39,7 @@ module.exports = {
         (SELECT count(*) 
           FROM recipes 
           WHERE recipes.chef_id = chefs.id
-        ) AS recipesAmount,
+        ) AS recipes_amount,
         files.path AS avatar_url
       FROM chefs
       LEFT JOIN files ON (chefs.file_id = files.id)
