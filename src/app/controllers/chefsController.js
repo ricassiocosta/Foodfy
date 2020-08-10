@@ -14,9 +14,14 @@ module.exports = {
       }
     }
 
+    if(req.files.length == 0) {
+      return res.send('Por favor, envie uma imagem de avatar!')
+    }
+
     Chef.create(req.body)
     .then((results) => {
       const chef = results.rows[0]
+      File.createChefAvatar(req.files[0], chef.id)
       return res.redirect(`/admin/chefs/${chef.id}`)
     }).catch((err) => {
       throw new Error(err)

@@ -50,6 +50,37 @@ module.exports = {
     }
   },
 
+  createChefAvatar(file, chefId) {
+    const query = `
+      INSERT INTO files (
+        name,
+        path
+      ) VALUES ( $1, $2 )
+      RETURNING ID
+    `
+
+    const values = [
+      file.filename,
+      file.path
+    ]
+
+    db.query(query, values, (err, results) => {
+      if(err) throw `DATABASE error! ${err}`
+      const fileId = results.rows[0].id
+      const query = `
+        UPDATE chefs
+        SET file_id = $1
+        WHERE chefs.id = $2
+        `
+      const values = [
+        fileId,
+        chefId
+      ]
+
+      return db.query(query, values)
+    })
+  },
+
   translateImagesURL(req, recipes) {
     recipes.map((recipe, index) => {
       recipes[index].image = {
