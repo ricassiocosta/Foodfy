@@ -53,6 +53,9 @@ module.exports = {
     async function returnAllRecipes() {
       let results = await Recipe.all()
       const recipes = results.rows
+      recipes.sort((a,b) => {
+        return (a.updated_at < b.updated_at) ? 1 : ((b.updated_at < a.updated_at) ? -1 : 0)
+      })
       return recipes
     }
 
@@ -67,6 +70,11 @@ module.exports = {
         total: Math.ceil(recipes[0].total / 12),
         page
       }
+      
+      recipes.sort((a,b) => {
+        return (a.updated_at < b.updated_at) ? 1 : ((b.updated_at < a.updated_at) ? -1 : 0)
+      })
+
       return { recipes, filter, pagination }
     }
 

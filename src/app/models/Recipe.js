@@ -11,8 +11,9 @@ module.exports = {
         ingredients,
         preparation,
         information,
-        created_at
-      ) VALUES ( $1, $2, $3, $4, $5, $6 )
+        created_at,
+        updated_at
+      ) VALUES ( $1, $2, $3, $4, $5, $6, $7 )
       RETURNING ID
     `
     const values = [
@@ -21,6 +22,7 @@ module.exports = {
       typeof data.ingredients === "string" ? [data.ingredients] : data.ingredients,
       typeof data.preparation === "string" ? [data.preparation] : data.preparation,
       data.information,
+      date(Date.now()).ISO,
       date(Date.now()).ISO
     ]
 
