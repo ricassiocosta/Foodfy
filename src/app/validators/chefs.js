@@ -39,13 +39,13 @@ function put(req, res, next) {
 }
 
 async function del(req, res, next) {
-  const chefID = req.params.chef_id
+  const chefId = req.params.chef_id
 
-  let results = await Chef.show(chefID)
-  const recipesAmount = results.rows[0].recipesamount
+  let results = await Chef.show(chefId)
+  const recipesAmount = results.rows[0].recipes_amount
 
   if(recipesAmount > 0) {
-    return res.send('[ERROR] O Chef não pôde ser deletado! Delete todas as receitas de um chefe antes de deletá-lo.')
+    return res.send('[ERRO] O Chef não pôde ser deletado! Delete todas as receitas de um chefe antes de deletá-lo.')
   } else {
     next()
   }

@@ -46,16 +46,16 @@ module.exports = {
   },
 
   async show(req, res) {
-    const chefID = req.params.chef_id
+    const chefId = req.params.chef_id
   
-    let results = await Chef.show(chefID)
+    let results = await Chef.show(chefId)
     const chefInfo = results.rows[0]
     const chef = {
       ...chefInfo,
       avatar_url: `${req.protocol}://${req.headers.host}${chefInfo.avatar_url.replace("public", "")}`
     }
 
-    results = await Chef.getRecipes(chefID)
+    results = await Chef.getRecipes(chefId)
     const recipes = results.rows
     
     File.translateImagesURL(req, recipes)
@@ -63,8 +63,8 @@ module.exports = {
   },
 
   edit(req, res) {
-    const chefID = req.params.chef_id
-    Chef.show(chefID)
+    const chefId = req.params.chef_id
+    Chef.show(chefId)
     .then((results) => {
       const chefInfo = results.rows[0]
       const chef = {
@@ -87,7 +87,8 @@ module.exports = {
   },
 
   async delete(req, res) {
-    Chef.delete(chefID)
+    const chefId = req.params.chef_id
+    Chef.delete(chefId)
     .then(() => {
       return res.redirect('/admin/chefs')
     }).catch((err) => {

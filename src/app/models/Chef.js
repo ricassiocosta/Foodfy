@@ -34,7 +34,7 @@ module.exports = {
     `)
   },
 
-  show(chefID) {
+  show(id) {
     return db.query(`
       SELECT chefs.*, 
         (SELECT count(*) 
@@ -45,17 +45,17 @@ module.exports = {
       FROM chefs
       LEFT JOIN files ON (chefs.file_id = files.id)
       WHERE chefs.id = $1
-      `, [chefID])
+      `, [id])
   },
 
-  getRecipes(chefID) {
+  getRecipes(id) {
     return db.query(`
       SELECT DISTINCT ON (recipes.title) recipes.id, recipes.title, files.path AS image
       FROM recipes
       LEFT JOIN recipe_files ON(recipes.id = recipe_files.recipe_id)
       LEFT JOIN files ON(recipe_files.file_id = files.id)
       WHERE recipes.chef_id = $1
-    `, [chefID])
+    `, [id])
   },
 
   async update(data, avatar) {
@@ -76,7 +76,8 @@ module.exports = {
     return db.query(query, values)
   },
 
-  delete(chefID) {
-    return db.query(`DELETE FROM chefs WHERE id = $1`, [chefID])
+  delete(id) {
+    File.deleteChefAvatar(id)
+    return db.query(`DELETE FROM chefs WHERE id = $1`, [id])
   }
 }
