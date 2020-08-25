@@ -14,17 +14,6 @@ module.exports = {
   },
 
   async post(req, res) {
-    const keys = Object.keys(req.body)
-    for(key of keys) {
-      if(req.body[key] == "") {
-        return res.send('Por favor, preencha todos os campos!')
-      }
-    }
-
-    if(req.files.length == 0) {
-      return res.send('Por favor, envie ao menos uma imagem!')
-    }
-
     Recipe.create(req.body)
     .then(async (results) => {
       const recipe = results.rows[0]
@@ -94,9 +83,9 @@ module.exports = {
   },
 
   async show(req, res) {
-    const recipeID = req.params.recipe_id
+    const recipeId = req.params.recipe_id
 
-    let results = await Recipe.files(recipeID) 
+    let results = await Recipe.files(recipeId) 
     const files = results.rows.map(recipe => ({
       ...recipe,
       src:`${req.protocol}://${req.headers.host}${recipe.path.replace("public", "")}`
@@ -109,7 +98,7 @@ module.exports = {
     }
     
     function returnToSiteView() {
-      Recipe.show(recipeID)
+      Recipe.show(recipeId)
       .then((results) => {
         const recipe = results.rows[0]
         if(recipe) {
@@ -123,7 +112,7 @@ module.exports = {
     }
 
     function returnToAdminView() {
-      Recipe.show(recipeID)
+      Recipe.show(recipeId)
       .then((results) => {
         const recipe = results.rows[0]
         if(recipe) {
@@ -138,13 +127,13 @@ module.exports = {
   },
 
   async edit(req, res) {
-    const recipeID = req.params.recipe_id
+    const recipeId = req.params.recipe_id
 
-    const recipeData = await getRecipeData(recipeID)
+    const recipeData = await getRecipeData(recipeId)
     const chefsListing = await getChefsListing()
 
-    async function getRecipeData(recipeID) {
-      let results = await Recipe.show(recipeID)
+    async function getRecipeData(recipeId) {
+      let results = await Recipe.show(recipeId)
       const recipeData = results.rows[0]
       return recipeData
     }
@@ -155,7 +144,7 @@ module.exports = {
       return chefsListing
     }
 
-    let results = await Recipe.files(recipeID) 
+    let results = await Recipe.files(recipeId) 
     const files = results.rows.map(recipe => ({
       ...recipe,
       src:`${req.protocol}://${req.headers.host}${recipe.path.replace("public", "")}`
@@ -165,28 +154,14 @@ module.exports = {
   },
 
   async put(req, res) {
-    const recipeID = req.params.recipe_id
+    const recipeId = req.params.recipe_id
 
-    if(req.files.length != 0) {
-      const newFilesPromise = req.files.map(file => File.createRecipeImages(file, req.body.id))
-      await Promise.all(newFilesPromise)
-    }
-
-    if(req.body.removed_files) {
-      const removedFiles = req.body.removed_files.split(",")
-      const lastIndex = removedFiles.length - 1
-      removedFiles.splice(lastIndex, 1)
-
-      const removedFilesPromise = removedFiles.map(id => File.deleteFile(id))
-      await Promise.all(removedFilesPromise)
-    }
-
-    let results = await Recipe.show(recipeID)
+    let results = await Recipe.show(recipeId)
     const recipe = results.rows[0]
     if(recipe) {
       Recipe.update(req.body)
       .then(() => {
-        return res.redirect(`/admin/receitas/${recipeID}`)
+        return res.redirect(`/admin/receitas/${recipeId}`)
       }).catch((err) => {
         throw new Error(err)
       })
@@ -196,13 +171,13 @@ module.exports = {
   },
 
   async delete(req, res) {
-    const recipeID = req.params.recipe_id
+    const recipeId = req.params.recipe_id
 
-    let results = await Recipe.show(recipeID)
+    let results = await Recipe.show(recipeId)
     const recipe = results.rows[0]
 
     if(recipe) {
-      Recipe.delete(recipeID)
+      Recipe.delete(recipeId)
       .then(() => {
         return res.redirect('/admin/receitas')
       }).catch((err) => {

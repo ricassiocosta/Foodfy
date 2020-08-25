@@ -7,17 +7,6 @@ module.exports = {
   },
 
   post(req, res) {
-    const keys = Object.keys(req.body)
-    for(key of keys) {
-      if(req.body[key] == "") {
-        return res.send('Por favor, preencha todos os campos!')
-      }
-    }
-
-    if(req.files.length == 0) {
-      return res.send('Por favor, envie uma imagem de avatar!')
-    }
-
     Chef.create(req.body)
     .then((results) => {
       const chef = results.rows[0]
@@ -89,17 +78,6 @@ module.exports = {
   },
 
   put(req, res) {
-    const keys = Object.keys(req.body)
-    for(key of keys) {
-      if(req.body[key] == "") {
-        return res.send('Por favor, preencha todos os campos!')
-      }
-    }
-
-    if(req.files.length == 0) {
-      return res.send('Por favor, envie uma imagem de avatar!')
-    }
-
     Chef.update(req.body, req.files[0])
     .then(() => {
       return res.redirect(`/admin/chefs/${req.body.id}`)
@@ -109,20 +87,11 @@ module.exports = {
   },
 
   async delete(req, res) {
-    const chefID = req.params.chef_id
-
-    let results = await Chef.show(chefID)
-    const recipesAmount = results.rows[0].recipesamount
-
-    if(recipesAmount > 0) {
-      return res.send('[ERROR] O Chef não pôde ser deletado! Delete todas as receitas de um chefe antes de deletá-lo.')
-    } else {
-      Chef.delete(chefID)
-      .then(() => {
-        return res.redirect('/admin/chefs')
-      }).catch((err) => {
-        throw new Error(err)
-      })
-    }
+    Chef.delete(chefID)
+    .then(() => {
+      return res.redirect('/admin/chefs')
+    }).catch((err) => {
+      throw new Error(err)
+    })
   }
 }
