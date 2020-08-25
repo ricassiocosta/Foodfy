@@ -1,5 +1,10 @@
 const File = require('../models/File')
 
+function index(req, res, next) {
+  req.is_admin = true
+  next()
+}
+
 function post(req, res, next) {
   const keys = Object.keys(req.body)
   for(key of keys) {
@@ -35,5 +40,6 @@ async function put(req, res, next) {
 
 module.exports = {
   post,
-  put
+  put,
+  index
 }

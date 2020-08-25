@@ -3,7 +3,7 @@ const multer = require('../app/middlewares/multer')
 const recipesController = require('../app/controllers/recipesController')
 const recipesValidator = require('../app/validators/recipes')
 
-routes.get('/', recipesController.index)
+routes.get('/', recipesValidator.index, recipesController.index)
 routes.get('/criar', recipesController.create)
 routes.get('/:recipe_id', recipesController.show)
 routes.get('/:recipe_id/editar', recipesController.edit)

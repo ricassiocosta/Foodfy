@@ -29,7 +29,7 @@ module.exports = {
   },
 
   async index(req, res) {
-    if(req.url.includes("admin")) {
+    if(req.is_admin) {
       const recipes = await returnAllRecipes()
       File.translateImagesURL(req, recipes)
       return res.render('admin/recipes/index', { recipes })
