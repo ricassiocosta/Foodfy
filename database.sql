@@ -14,11 +14,24 @@ CREATE TABLE "chefs" (
   file_id INT
 );
 
-ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
+ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id") ON DELETE CASCADE;
+
+CREATE TABLE "users" (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  reset_token TEXT,
+  reset_token_expires TEXT,
+  is_admin BOOLEAN DEFAULT false,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+)
 
 CREATE TABLE "recipes" (
 	id SERIAL PRIMARY KEY,
   chef_id INTEGER,
+  user_id INTEGER,
   title TEXT,
   ingredients TEXT[],
   preparation TEXT[],
@@ -27,7 +40,8 @@ CREATE TABLE "recipes" (
   updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id");
+ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id") ON DELETE CASCADE;
+ALTER TABLE "recipes" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
 
 CREATE TABLE "recipe_files" (
 	id SERIAL PRIMARY KEY,
@@ -48,5 +62,10 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON recipes
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
