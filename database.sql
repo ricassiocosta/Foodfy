@@ -52,6 +52,12 @@ CREATE TABLE "recipe_files" (
 ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id") ON DELETE CASCADE;
 ALTER TABLE "recipe_files" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id") ON DELETE CASCADE;
 
+CREATE TABLE "session" (
+  sid VARCHAR PRIMARY KEY,
+  sess JSON,
+  expire TIMESTAMP WITHOUT TIME ZONE
+)
+
 CREATE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
 	BEGIN
