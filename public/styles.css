@@ -646,3 +646,32 @@ header.admin-header span.selected {
   margin-left: 30px;
   cursor: pointer;
 }  
+
+.header-edit.user {
+  margin-bottom: 32px;
+}
+
+.user-create {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.user-create .form-field {
+  margin: 0;
+}
+
+
+.user-create .form-field.check-admin {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-create .form-field.check-admin input {
+  margin-right: 4px;
+}
+
+.user-create .form-field.check-admin span {
+  margin: 0;
+}

@@ -1,0 +1,20 @@
+{% extends 'layout-admin.njk' %}
+
+{% block menu_options %}
+{% endblock menu_options %}
+
+{% block content %}
+  <div class="recipe-edit">
+    <form method="POST" action="/admin/usuarios">
+      <div class="header-edit user">
+        <div>
+          <span>Criar Usuário</span>
+        </div>
+        <div class="edit-actions">
+          <button type="submit" class="save">Salvar</button>
+        </div>
+      </div>
+      {% include "admin/users/fields.njk" %}
+    </form>
+  </div>
+{% endblock content %}

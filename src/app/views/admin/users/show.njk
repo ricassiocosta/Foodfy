@@ -1,0 +1,33 @@
+{% extends 'layout-admin.njk' %}
+
+{% block menu_options %}
+{% endblock menu_options %}
+
+{% block content %}
+  <div class="recipe-edit">
+    <form method="POST" action="/admin/usuarios?_method=PUT">
+      <div class="header-edit user">
+        <div>
+          <span>Bem vindo {{user.name}}</span>
+        </div>
+        <div class="edit-actions">
+          <button type="submit" class="save">Salvar</button>
+        </div>
+      </div>
+      <section class="form-content user-create">
+        <div class="form-field">
+          <span>Nome</span>
+          <input type="text" name="name" value="{{user.name}}">
+        </div>
+        <div class="form-field">
+          <span>Email</span>
+          <input type="text" name="name" value="{{user.name}}">
+        </div>
+        <div class="form-field check-admin">
+          <span>Senha</span>
+          <input type="password" name="password" placeholder="Digite sua senha">
+        </div>
+      </section>
+    </form>
+  </div>
+{% endblock content %}

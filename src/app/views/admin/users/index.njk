@@ -1,0 +1,26 @@
+{% extends 'layout-admin.njk' %}
+
+{% block header %}
+  <a href="/admin/receitas"><span>RECEITAS</span></a>
+  <a href="/admin/chefs"><span>CHEFS</span></a>
+  <a href="/admin/usuarios"><span class="selected">USUÁRIOS</span></a>
+{% endblock header %}
+
+{% block content %}
+  <div>
+    <a href="/admin/usuarios/registrar" class="create-chef">Novo</a>
+    <h2 style="margin-bottom: 50px">Usuários</h2>
+  </div>
+  <div class="users-adminview">
+    {% for user in users %}
+    <div class="user-adminview">
+      <span>{{user.name}}</span><br>
+      <span>{{user.email}}</span>
+      <div class="actions">
+        <a href="">Editar</a>
+        <a href="">Remover</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock content %}}
