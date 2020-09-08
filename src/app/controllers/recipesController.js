@@ -91,7 +91,7 @@ module.exports = {
       src:`${req.protocol}://${req.headers.host}${recipe.path.replace("public", "")}`
     }))
 
-    if(!req.url.includes('admin')) {
+    if(!req.is_admin) {
       returnToSiteView()
     } else {
       returnToAdminView()

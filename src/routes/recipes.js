@@ -5,7 +5,7 @@ const recipesValidator = require('../app/validators/recipes')
 
 routes.get('/', recipesValidator.index, recipesController.index)
 routes.get('/criar', recipesController.create)
-routes.get('/:recipe_id', recipesController.show)
+routes.get('/:recipe_id', recipesValidator.show, recipesController.show)
 routes.get('/:recipe_id/editar', recipesController.edit)
 
 routes.post('/', multer.array('photos', 5), recipesValidator.post, recipesController.post)
