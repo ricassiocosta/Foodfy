@@ -575,3 +575,74 @@ header.admin-header span.selected {
     filter: brightness(0.3);
     border-bottom: 1px solid #6558c3;
 }
+
+.login-header header {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.login-form form {
+  width: 400px;
+}
+
+.login-form h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 48px;
+}
+
+.login-form .input-block {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+.login-form .input-block span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.login-form .input-block input {
+  height: 40px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.login-form .input-block input::placeholder {
+  color: #dddddd;
+}
+
+.login-form .submit-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.login-form .submit-block a {
+  text-decoration: none;
+  color: gray;
+}
+
+.login-form .submit-block a:hover {
+  font-weight: bold;
+}
+
+.login-form .submit-block button {
+  width: 70px;
+  height: 30px;
+  background-color: #6558C3;
+  color: white;
+  border-radius: 4px;
+  margin-left: 30px;
+  cursor: pointer;
+}  
