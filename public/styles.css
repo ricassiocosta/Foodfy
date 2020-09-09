@@ -143,7 +143,7 @@ footer span {
 }
 
 .recipe > p,
-.recipes-adminview p 
+.recipes-adminview p
 {
   color: #777777;
   font-size: 14px;
@@ -438,7 +438,8 @@ footer span {
   gap: 10px;
 }
 
-.chefs-adminview {
+.chefs-adminview, 
+.users-adminview {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 10px;
@@ -470,6 +471,30 @@ footer span {
   object-position: center;
   border-radius: 50%;
   margin-right: 10px;
+}
+
+.users-adminview span {
+  font-size: 18px;
+}
+
+.users-adminview br + span {
+  font-size: 14px;
+  color: #777; 
+}
+
+.users-adminview .actions {
+  margin-top: 8px;
+}
+
+.users-adminview .actions a {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #F55A5A;
+}
+
+.users-adminview .actions a:first-child {
+  color: #6558C3;
 }
 
 .more-detail {

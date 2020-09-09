@@ -40,7 +40,7 @@ module.exports = {
 
   async checkIfUserExists(email) {
     let results = await db.query(`SELECT id FROM users WHERE email = $1`, [email])
-    if(results.rows) {
+    if(results.rows[0]) {
       return true
     } else {
       return false

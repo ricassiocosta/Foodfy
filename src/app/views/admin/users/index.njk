@@ -20,8 +20,10 @@
       <span>{{user.email}}</span>
       {% if logged_user.is_admin %}
       <div class="actions">
-        <a href="">Editar</a>
-        <a href="">Remover</a>
+        <a href="/admin/usuarios/{{user.id}}/editar">Editar</a>
+        {% if logged_user.id != user.id %}
+          <a href="/admin/usuarios/{{user.id}}/deletar">Remover</a>
+        {% endif %}
       </div>
       {% endif %}
     </div>
