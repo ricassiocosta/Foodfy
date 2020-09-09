@@ -18,6 +18,7 @@ routes.use('/admin/receitas', recipes)
 routes.use('/admin/chefs', chefs)
 
 routes.get('/admin/usuarios', userController.index)
+routes.post('/admin/usuarios', userController.post)
 routes.get('/admin/usuarios/registrar', userController.create)
 
 
