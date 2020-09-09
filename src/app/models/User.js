@@ -2,7 +2,6 @@ const { hash } = require('bcryptjs')
 const db = require('../../config/database')
 const generatePassword = require('../../utils/generatePassword')
 const mailer = require('../../utils/mailer')
-const { show } = require('../controllers/chefsController')
 
 module.exports = {
   async create(data) {
@@ -24,7 +23,7 @@ module.exports = {
         is_admin,
         password
       ) VALUES ( $1, $2, $3, $4)
-      RETURNING ID
+      RETURNING id, name, email, is_admin
     `
 
     const passwordHash = await hash(password, 8)
@@ -37,20 +36,22 @@ module.exports = {
     ]
 
     const results = await db.query(query, values)
-    return results.rows[0].id
+    return results.rows[0]
   },
 
   async checkIfUserExists(email) {
-    const query = `
-      SELECT id FROM users
-      WHERE email = $1
-    `
     let results = await db.query(`SELECT id FROM users WHERE email = $1`, [email])
-    
-    if(results.rows[0]) {
-      return true
-    } else {
-      return false
-    }
+    return results.rows[0]
+  },
+
+  async show(id) {
+    let results = await db.query(`SELECT * FROM users WHERE id = $1`, [id])
+    return results.rows[0]
+  },
+
+  async getAllUsers() {
+    let results = await db.query(`SELECT * FROM users`)
+    const userList = results.rows
+    return userList
   }
 }

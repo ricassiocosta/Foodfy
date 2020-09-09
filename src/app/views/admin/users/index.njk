@@ -8,7 +8,9 @@
 
 {% block content %}
   <div>
+    {% if logged_user.is_admin %}
     <a href="/admin/usuarios/registrar" class="create-chef">Novo</a>
+    {% endif %}
     <h2 style="margin-bottom: 50px">Usuários</h2>
   </div>
   <div class="users-adminview">
@@ -16,10 +18,12 @@
     <div class="user-adminview">
       <span>{{user.name}}</span><br>
       <span>{{user.email}}</span>
+      {% if logged_user.is_admin %}
       <div class="actions">
         <a href="">Editar</a>
         <a href="">Remover</a>
       </div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
