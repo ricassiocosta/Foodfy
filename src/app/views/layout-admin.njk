@@ -11,9 +11,14 @@
   <div class="container">
     <header class="admin-header">
       <div>
-        <a href="/admin"><img src="/assets/logo-white.png" alt="foodfy"></a>
-        {% block header %}
-        {% endblock header %}
+        <div class="menu">
+          <a href="/admin"><img src="/assets/logo-white.png" alt="foodfy"></a>
+          {% block header %}
+          {% endblock header %}
+        </div>
+        <div class="logout">
+          <a href="/logout"><span class="selected">SAIR</span></a>
+        </div>
       </div>
     </header> 
     <div class="content">

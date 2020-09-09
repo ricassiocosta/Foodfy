@@ -481,13 +481,20 @@ header.admin-header {
   background-color: #111111;
   height: 80px;
   margin-top: 0px;
+  display: flex;
+  justify-content: center;
 }
 
-header.admin-header div {
-  display: flex;
+header.admin-header > div {
   width: 940px;
+  display: flex;
   align-items: center;
-  margin: 0 auto;
+  justify-content: space-between;
+}
+
+header.admin-header .menu {
+  display: flex;
+  align-items: center;
 }
 
 header.admin-header a {

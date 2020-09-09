@@ -14,6 +14,7 @@ routes.get('/receitas', recipesController.index)
 routes.get('/chefs', chefsController.listing)
 routes.get('/receitas/:recipe_id', recipesController.show)
 routes.get('/login', sessionController.loginForm)
+routes.get('/logout', sessionController.logout)
 routes.post('/login', sessionValidator.login ,sessionController.login)
 
 routes.get('/admin', (req, res) => { return res.redirect('/admin/receitas')})
