@@ -3,6 +3,7 @@ const recipesController = require('../app/controllers/recipesController')
 const chefsController = require('../app/controllers/chefsController')
 const sessionController = require('../app/controllers/sessionController')
 const userController = require('../app/controllers/userController')
+const userValidator  = require('../app/validators/user')
 const recipes = require('./recipes')
 const chefs = require('./chefs')
 
@@ -18,7 +19,7 @@ routes.use('/admin/receitas', recipes)
 routes.use('/admin/chefs', chefs)
 
 routes.get('/admin/usuarios', userController.index)
-routes.post('/admin/usuarios', userController.post)
+routes.post('/admin/usuarios', userValidator.create, userController.post)
 routes.get('/admin/usuarios/registrar', userController.create)
 
 
