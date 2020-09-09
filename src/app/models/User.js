@@ -23,7 +23,6 @@ module.exports = {
         is_admin,
         password
       ) VALUES ( $1, $2, $3, $4)
-      RETURNING id, name, email, is_admin
     `
 
     const passwordHash = await hash(password, 8)
@@ -41,11 +40,15 @@ module.exports = {
 
   async checkIfUserExists(email) {
     let results = await db.query(`SELECT id FROM users WHERE email = $1`, [email])
-    return results.rows[0]
+    if(results.rows) {
+      return true
+    } else {
+      return false
+    }
   },
 
-  async show(id) {
-    let results = await db.query(`SELECT * FROM users WHERE id = $1`, [id])
+  async get(email) {
+    let results = await db.query(`SELECT * FROM users WHERE email = $1`, [email])
     return results.rows[0]
   },
 

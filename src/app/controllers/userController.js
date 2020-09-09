@@ -27,8 +27,7 @@ module.exports = {
 
   async post(req, res) {
     try {
-      const user = await User.create(req.body)
-      req.session.loggedUser = user
+      await User.create(req.body)
       return res.redirect('/admin/usuarios')
     } catch (err) {
       console.error(err)
