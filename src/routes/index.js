@@ -2,11 +2,8 @@ const routes = require('express').Router()
 const recipesController = require('../app/controllers/recipesController')
 const chefsController = require('../app/controllers/chefsController')
 const sessionController = require('../app/controllers/sessionController')
-const userController = require('../app/controllers/userController')
-const userValidator  = require('../app/validators/user')
 const sessionValidator  = require('../app/validators/session')
-const recipes = require('./recipes')
-const chefs = require('./chefs')
+const admin = require('./admin')
 
 routes.get('/', recipesController.mostAccessed)
 routes.get('/sobre', (req, res) => { return res.render('site/about') })
@@ -17,13 +14,6 @@ routes.get('/login', sessionController.loginForm)
 routes.get('/logout', sessionController.logout)
 routes.post('/login', sessionValidator.login ,sessionController.login)
 
-routes.get('/admin', (req, res) => { return res.redirect('/admin/receitas')})
-routes.use('/admin/receitas', recipes)
-routes.use('/admin/chefs', chefs)
-
-routes.get('/admin/usuarios', userController.index)
-routes.post('/admin/usuarios', userValidator.create, userController.post)
-routes.get('/admin/usuarios/registrar', userController.create)
-
+routes.use('/admin', sessionValidator.checkIfUserIsLogged, admin)
 
 module.exports = routes

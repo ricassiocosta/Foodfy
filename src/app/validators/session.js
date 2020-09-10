@@ -21,6 +21,15 @@ async function login(req, res, next) {
   }
 }
 
+function checkIfUserIsLogged (req, res, next) {
+  if(!req.session.loggedUser) {
+    return res.redirect('/login')
+  }
+
+  next()
+}
+
 module.exports = {
-  login
+  login,
+  checkIfUserIsLogged
 }
