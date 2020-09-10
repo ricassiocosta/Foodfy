@@ -8,7 +8,10 @@ async function login(req, res, next) {
     const userExists = await User.checkIfUserExists(email)
     if(!userExists) return res.send('Email não cadastrado!')
 
-    const user = await User.get(email)
+    const user = await User.get({
+      condition: 'email',
+      value: email
+    })
 
     const passed = await compare(password, user.password)
     if(!passed) return res.send('Senha incorreta!')

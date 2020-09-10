@@ -38,6 +38,26 @@ module.exports = {
     return results.rows[0]
   },
 
+  async update(data) {
+    const query = `
+      UPDATE users SET
+        name = ($1),
+        email = ($2),
+        is_admin = ($3)
+      WHERE id = $4
+    `
+
+    const values = [
+      data.name,
+      data.email,
+      data.is_admin,
+      data.id
+    ]
+
+    const results = await db.query(query, values)
+    return results.rows[0]
+  },
+
   async checkIfUserExists(email) {
     let results = await db.query(`SELECT id FROM users WHERE email = $1`, [email])
     if(results.rows[0]) {
@@ -47,8 +67,8 @@ module.exports = {
     }
   },
 
-  async get(email) {
-    let results = await db.query(`SELECT * FROM users WHERE email = $1`, [email])
+  async get(query) {
+    let results = await db.query(`SELECT * FROM users WHERE ${query.condition} = $1`, [query.value])
     return results.rows[0]
   },
 

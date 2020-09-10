@@ -7,7 +7,6 @@ module.exports = {
 
   index(req, res) {
     const { loggedUser } = req.session
-    console.log(loggedUser)
     try {
       User.getAllUsers()
       .then((results) => {
@@ -28,6 +27,27 @@ module.exports = {
   async post(req, res) {
     try {
       await User.create(req.body)
+      return res.redirect('/admin/usuarios')
+    } catch (err) {
+      console.error(err)
+    }
+  },
+
+  async edit(req, res) {
+    const { loggedUser } = req.session
+    const { id } = req.params
+
+    const user = await User.get({
+      condition: 'id',
+      value: id
+    })
+
+    return res.render('admin/users/edit', { user, loggedUser })
+  },
+
+  async put(req, res) {
+    try {
+      await User.update(req.body)
       return res.redirect('/admin/usuarios')
     } catch (err) {
       console.error(err)
