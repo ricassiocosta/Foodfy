@@ -44,7 +44,21 @@ async function edit(req, res, next) {
   next()
 }
 
+async function del(req, res, next) {
+  const { loggedUser } = req.session
+  const { id } = req.params
+
+  if(!loggedUser.is_admin)
+    return res.send('Somente administradores podem apagar usuários!')
+  
+  if(loggedUser.id == id)
+    return res.send('Você não pode apagar sua própria conta!')
+  
+  next()
+}
+
 module.exports = {
   create,
-  edit
+  edit,
+  del
 }

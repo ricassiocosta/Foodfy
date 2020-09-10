@@ -52,5 +52,15 @@ module.exports = {
     } catch (err) {
       console.error(err)
     }
+  },
+
+  async delete(req, res) {
+    const { id } = req.params
+    try {
+      await User.delete(id)
+      return res.redirect('/admin/usuarios')
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
