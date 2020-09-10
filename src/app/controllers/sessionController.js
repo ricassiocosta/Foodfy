@@ -1,6 +1,10 @@
 module.exports = {
   loginForm(req, res) {
-    return res.render('session/login')
+    const { loggedUser } = req.session
+    if(!loggedUser)
+      return res.render('session/login')
+    
+    return res.redirect('/admin')
   },
 
   login(req, res) {
