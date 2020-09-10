@@ -70,8 +70,10 @@ module.exports = {
       data.id
     ]
 
-    await File.deleteChefAvatar(data.id)
-    File.createChefAvatar(avatar, data.id)
+    if(avatar) {
+      await File.deleteChefAvatar(data.id)
+      File.createChefAvatar(avatar, data.id)
+    }
 
     return db.query(query, values)
   },

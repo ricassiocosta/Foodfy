@@ -44,9 +44,22 @@ async function put(req, res, next) {
 
   let results = await Recipe.show(req.body.id)
   const recipe = results.rows[0]
-  if(recipe.user_id != loggedUser.id)
+  if(recipe.user_id != loggedUser.id && !loggedUser.is_admin)
     return res.send('Somente o usuário que criou esta receita pode editá-la!')
 
+  next()
+}
+
+async function del(req, res, next) {
+  const id = req.params.recipe_id
+  const { loggedUser } = req.session
+
+  let results = await Recipe.show(id)
+  const recipe = results.rows[0]
+
+  if(recipe.user_id != loggedUser.id && !loggedUser.is_admin)
+    return res.send('Somente o usuário que criou esta receita pode apagá-la!')
+  
   next()
 }
 
@@ -54,5 +67,6 @@ module.exports = {
   post,
   put,
   index,
-  show
+  show,
+  del
 }

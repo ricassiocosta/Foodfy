@@ -10,6 +10,6 @@ routes.get('/:recipe_id/editar', recipesController.edit)
 
 routes.post('/', multer.array('photos', 5), recipesValidator.post, recipesController.post)
 routes.put('/:recipe_id', multer.array('photos', 5), recipesValidator.put, recipesController.put)
-routes.delete('/:recipe_id', recipesController.delete)
+routes.delete('/:recipe_id', recipesValidator.del, recipesController.delete)
 
 module.exports = routes

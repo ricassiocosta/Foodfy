@@ -5,7 +5,7 @@ module.exports = {
 
   login(req, res) {
     req.session.loggedUser = req.user
-    return res.render('admin/recipes/index')
+    return res.redirect('/admin')
   },
 
   logout(req, res) {

@@ -18,7 +18,7 @@
     <div class="user-adminview">
       <span>{{user.name}}</span><br>
       <span>{{user.email}}</span>
-      {% if loggedUser.is_admin %}
+      {% if loggedUser.is_admin or loggedUser.id == user.id %}
       <div class="actions">
         <a href="/admin/usuarios/{{user.id}}/editar">Editar</a>
         {% if loggedUser.id != user.id %}

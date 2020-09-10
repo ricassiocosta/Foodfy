@@ -12,7 +12,7 @@
       {% if user.is_admin %} 
         checked 
       {% endif %} 
-      {% if loggedUser.is_admin and loggedUser.email == user.email %}
+      {% if not loggedUser.is_admin or loggedUser.is_admin and loggedUser.id == user.id %}
         disabled
       {% endif %}>
     <span>Administrador</span>
