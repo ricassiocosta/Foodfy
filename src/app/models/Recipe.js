@@ -3,21 +3,23 @@ const { date } = require('../../utils/date')
 const File = require('../models/File')
 
 module.exports = {
-  create(data) {
+  create(data, loggedUser) {
     const query = `
       INSERT INTO recipes (
         chef_id,
+        user_id,
         title,
         ingredients,
         preparation,
         information,
         created_at,
         updated_at
-      ) VALUES ( $1, $2, $3, $4, $5, $6, $7 )
+      ) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8 )
       RETURNING ID
     `
     const values = [
       data.chef,
+      loggedUser.id,
       data.title,
       typeof data.ingredients === "string" ? [data.ingredients] : data.ingredients,
       typeof data.preparation === "string" ? [data.preparation] : data.preparation,

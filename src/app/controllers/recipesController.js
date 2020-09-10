@@ -14,7 +14,8 @@ module.exports = {
   },
 
   async post(req, res) {
-    Recipe.create(req.body)
+    const { loggedUser } = req.session
+    Recipe.create(req.body, loggedUser)
     .then(async (results) => {
       const recipe = results.rows[0]
       const filesPromise = req.files.map(file => {
@@ -83,6 +84,7 @@ module.exports = {
   },
 
   async show(req, res) {
+    const { loggedUser } = req.session
     const recipeId = req.params.recipe_id
 
     let results = await Recipe.files(recipeId) 
@@ -116,7 +118,7 @@ module.exports = {
       .then((results) => {
         const recipe = results.rows[0]
         if(recipe) {
-          return res.render('admin/recipes/show', { recipe, files })
+          return res.render('admin/recipes/show', { recipe, files, loggedUser })
         } else {
           return res.status(404).send('Receita não encontrada!')
         }

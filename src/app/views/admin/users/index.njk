@@ -8,7 +8,7 @@
 
 {% block content %}
   <div>
-    {% if logged_user.is_admin %}
+    {% if loggedUser.is_admin %}
     <a href="/admin/usuarios/registrar" class="create-chef">Novo</a>
     {% endif %}
     <h2 style="margin-bottom: 50px">Usuários</h2>
@@ -18,10 +18,10 @@
     <div class="user-adminview">
       <span>{{user.name}}</span><br>
       <span>{{user.email}}</span>
-      {% if logged_user.is_admin %}
+      {% if loggedUser.is_admin %}
       <div class="actions">
         <a href="/admin/usuarios/{{user.id}}/editar">Editar</a>
-        {% if logged_user.id != user.id %}
+        {% if loggedUser.id != user.id %}
           <a href="/admin/usuarios/{{user.id}}/deletar">Remover</a>
         {% endif %}
       </div>

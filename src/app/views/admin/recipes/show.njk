@@ -5,7 +5,9 @@
 
 {% block content %}
   <div class="recipe-detail">
-    <a href="/admin/receitas/{{recipe.id}}/editar">Editar receita</a>
+    {% if loggedUser.id == recipe.user_id or loggedUser.is_admin %}
+    <a href="/admin/receitas/{{recipe.id}}/editar">Editar</a>
+    {% endif %}
     <div class="recipe-gallery">
       <div class="highlight">
         <img src="{{files[0].src}}" alt="recipe.title" class="highlighted">

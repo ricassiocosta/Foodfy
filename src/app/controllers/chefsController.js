@@ -32,6 +32,7 @@ module.exports = {
   },
 
   index(req, res) {
+    const { loggedUser } = req.session
     Chef.all()
     .then((results) => {
       const chefs = results.rows
@@ -39,13 +40,14 @@ module.exports = {
         ...chef,
         avatar_url:`${req.protocol}://${req.headers.host}${chef.avatar_url.replace("public", "")}`
       }))
-      return res.render('admin/chefs/index', { chefs: chefsListing })
+      return res.render('admin/chefs/index', { chefs: chefsListing, loggedUser })
     }).catch((err) => {
       throw new Error(err)
     })
   },
 
   async show(req, res) {
+    const { loggedUser } = req.session
     const chefId = req.params.chef_id
   
     let results = await Chef.show(chefId)
@@ -59,7 +61,7 @@ module.exports = {
     const recipes = results.rows
     
     File.translateImagesURL(req, recipes)
-    return res.render('admin/chefs/show', { chef, recipes })
+    return res.render('admin/chefs/show', { chef, recipes, loggedUser })
   },
 
   edit(req, res) {

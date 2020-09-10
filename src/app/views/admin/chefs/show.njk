@@ -7,7 +7,9 @@
 
 {% block content %}
   <div>
-    <a href="/admin/chefs/{{chef.id}}/editar" class="create-chef">Editar Chef</a>
+    {% if loggedUser.is_admin %}
+    <a href="/admin/chefs/{{chef.id}}/editar" class="create-chef">Editar</a>
+    {% endif %}
     <h2 style="margin-bottom: 50px">Chef: {{chef.name}}</h2>
   </div>
   <div class="chef-detail">

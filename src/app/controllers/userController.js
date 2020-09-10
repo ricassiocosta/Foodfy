@@ -11,7 +11,7 @@ module.exports = {
       User.getAllUsers()
       .then((results) => {
         return res.render('admin/users/index', { 
-          logged_user: loggedUser, 
+          loggedUser, 
           users: results 
         })
       })

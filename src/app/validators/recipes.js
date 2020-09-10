@@ -1,4 +1,5 @@
 const File = require('../models/File')
+const Recipe = require('../models/Recipe')
 
 function index(req, res, next) {
   req.is_admin = true
@@ -26,6 +27,7 @@ function post(req, res, next) {
 }
 
 async function put(req, res, next) {
+  const { loggedUser } = req.session
   if(req.files && req.files.length != 0) {
     const newFilesPromise = req.files.map(file => File.createRecipeImages(file, req.body.id))
     await Promise.all(newFilesPromise)
@@ -39,6 +41,11 @@ async function put(req, res, next) {
     const removedFilesPromise = removedFiles.map(id => File.deleteFile(id))
     await Promise.all(removedFilesPromise)
   }
+
+  let results = await Recipe.show(req.body.id)
+  const recipe = results.rows[0]
+  if(recipe.user_id != loggedUser.id)
+    return res.send('Somente o usuário que criou esta receita pode editá-la!')
 
   next()
 }
