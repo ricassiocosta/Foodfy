@@ -22,11 +22,14 @@
       <div class="actions">
         <a href="/admin/usuarios/{{user.id}}/editar">Editar</a>
         {% if loggedUser.id != user.id %}
-          <a href="/admin/usuarios/{{user.id}}/deletar">Remover</a>
+        <label for="delete" class="delete">Deletar</label>
+        <form method="POST" action="/admin/usuarios/{{user.id}}?_method=DELETE" id="form-delete">
+          <button type="submit" class="delete" name="delete" id="delete">Deletar</button>
+        </form>
         {% endif %}
       </div>
       {% endif %}
     </div>
     {% endfor %}
   </div>
-{% endblock content %}}
+{% endblock content %}

@@ -492,11 +492,13 @@ footer span {
   text-decoration: none;
   font-size: 14px;
   font-weight: bold;
-  color: #F55A5A;
-}
-
-.users-adminview .actions a:first-child {
   color: #6558C3;
+}
+.users-adminview .actions label {
+  color: #F55A5A;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .more-detail {

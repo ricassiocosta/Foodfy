@@ -8,6 +8,6 @@ routes.post('/', userValidator.create, userController.post)
 routes.get('/registrar', userValidator.create, userController.create)
 routes.get('/:id/editar', userController.edit)
 routes.put('/:id', userValidator.put, userController.put)
-routes.get('/:id/deletar', userValidator.del, userController.delete)
+routes.delete('/:id', userValidator.del, userController.delete)
 
 module.exports = routes

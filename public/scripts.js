@@ -213,3 +213,13 @@ const ImageGallery = {
     ImageGallery.highlight.src = target.src
   }
 }
+
+const formDelete = document.querySelector('#form-delete')
+if(formDelete) {
+  formDelete.addEventListener("submit", (event) => {
+    const confirmation = confirm("Tem certeza que deseja deletar?")
+    if(!confirmation) {
+    event.preventDefault()
+    }
+  })
+}

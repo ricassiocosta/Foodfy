@@ -21,7 +21,7 @@
       </div>
       {% include "admin/chefs/fields.njk" %}
     </form>
-    <form method="POST" action="/admin/chefs/{{chef.id}}?_method=DELETE">
+    <form method="POST" action="/admin/chefs/{{chef.id}}?_method=DELETE" id="form-delete">
       <button type="submit" class="delete" name="delete" id="delete">Deletar</button>
     </form>
   </div>
