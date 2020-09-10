@@ -16,9 +16,16 @@
       {% if not loggedUser.is_admin or loggedUser.is_admin and loggedUser.id == user.id %}
         disabled
       {% endif %}>
+      <span>Administrador</span>
     {% else %}
       <input type="checkbox" name="is_admin">
+      <span>Administrador</span>
     {% endif %}
-    <span>Administrador</span>
   </div>
+  {% if user %}
+      <div class="form-field">
+        <span>Senha</span>
+        <input type="password" name="password" placeholder="Digite sua senha para atualizar" required>
+      </div>
+    {% endif %}
 </section>

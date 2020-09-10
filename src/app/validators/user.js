@@ -1,3 +1,4 @@
+const { compare } = require('bcryptjs')
 const User = require('../models/User')
 
 async function create(req, res, next) {
@@ -15,13 +16,16 @@ async function create(req, res, next) {
   next()
 }
 
-async function edit(req, res, next) {
-  const { id, email } = req.body
+async function put(req, res, next) {
+  const { id, email, password } = req.body
   const { loggedUser } = req.session
-
-  if((!loggedUser.is_admin) && loggedUser.id != id) {
+  
+  if((!loggedUser.is_admin) && loggedUser.id != id)
     return res.send('Somente administradores podem atualizar o cadastrado de outros usuários!')
-  }
+
+  const passed = await compare(password, loggedUser.password)
+  if(!passed) 
+    return res.send('Senha incorreta!')
 
   const user = await User.get({
     condition: 'id',
@@ -37,7 +41,7 @@ async function edit(req, res, next) {
     return res.send('Não é possível deixar de ser admin')
   }
 
-  if(loggedUser.is_admin) {
+  if(user.is_admin) {
     req.body.is_admin = true
   }
 
@@ -59,6 +63,6 @@ async function del(req, res, next) {
 
 module.exports = {
   create,
-  edit,
+  put,
   del
 }

@@ -312,7 +312,9 @@ footer span {
   margin-bottom: 8px;
 }
 
-.form-field input[type="text"], .form-field select {
+.form-field input[type="text"], 
+.form-field input[type="password"],
+.form-field select {
   border: 1px solid #dddddd;
   height: 40px;
   border-radius: 4px;
