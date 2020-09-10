@@ -23,6 +23,14 @@ function post(req, res, next) {
   }
 }
 
+function manage(req, res, next) {
+  const { loggedUser } = req.session
+  if(!loggedUser.is_admin) 
+    return res.send('Somente administradores podem atualizar chefs')
+  
+  next()
+}
+
 function put(req, res, next) {
   try {
     const { loggedUser } = req.session
@@ -64,6 +72,7 @@ async function del(req, res, next) {
 
 module.exports = {
   post,
+  manage,
   put,
   del
 }

@@ -26,10 +26,23 @@ function post(req, res, next) {
   next()
 }
 
-async function put(req, res, next) {
+async function edit(req, res, next) {
+  const id = req.params.recipe_id
   const { loggedUser } = req.session
+
+  let results = await Recipe.show(id)
+  const recipe = results.rows[0]
+  if(recipe.user_id != loggedUser.id && !loggedUser.is_admin)
+    return res.send('Somente o usuário que criou esta receita pode editá-la!')
+  
+  next()
+}
+
+async function put(req, res, next) {
+  const { id } = req.body.id
+  
   if(req.files && req.files.length != 0) {
-    const newFilesPromise = req.files.map(file => File.createRecipeImages(file, req.body.id))
+    const newFilesPromise = req.files.map(file => File.createRecipeImages(file, id))
     await Promise.all(newFilesPromise)
   }
 
@@ -41,11 +54,6 @@ async function put(req, res, next) {
     const removedFilesPromise = removedFiles.map(id => File.deleteFile(id))
     await Promise.all(removedFilesPromise)
   }
-
-  let results = await Recipe.show(req.body.id)
-  const recipe = results.rows[0]
-  if(recipe.user_id != loggedUser.id && !loggedUser.is_admin)
-    return res.send('Somente o usuário que criou esta receita pode editá-la!')
 
   next()
 }
@@ -65,6 +73,7 @@ async function del(req, res, next) {
 
 module.exports = {
   post,
+  edit,
   put,
   index,
   show,

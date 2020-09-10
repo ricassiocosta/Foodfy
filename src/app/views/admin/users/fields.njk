@@ -8,13 +8,17 @@
     <input type="text" name="email" value="{{user.email}}">
   </div>
   <div class="form-field check-admin">
-    <input type="checkbox" name="is_admin" 
+    {% if user %}
+      <input type="checkbox" name="is_admin" 
       {% if user.is_admin %} 
         checked 
       {% endif %} 
       {% if not loggedUser.is_admin or loggedUser.is_admin and loggedUser.id == user.id %}
         disabled
       {% endif %}>
+    {% else %}
+      <input type="checkbox" name="is_admin">
+    {% endif %}
     <span>Administrador</span>
   </div>
 </section>
