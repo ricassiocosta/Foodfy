@@ -738,10 +738,14 @@ header.admin-header span.selected {
 .messages {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 16px;
   position: absolute;
-  width: 100%;
-  top: 0;
+  width: 344px;
+  height: 135px;
+  top: 12px;
+  right: 18px;
+  z-index: 1;
   color: white;
   opacity: 1;
 
@@ -749,7 +753,7 @@ header.admin-header span.selected {
 }
 
 .messages.error {
-  background: red;
+  background: #DC4747;
 }
 
 .messages.success {

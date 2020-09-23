@@ -7,6 +7,7 @@
   <title>Foodfy</title>
 </head>
 <body>
+  {% include "parts/messages.njk" %}
   <div class="container login-header">
     <header>
       <a href="/"><img src="/assets/logo.png" alt="foodfy"></a>
@@ -16,7 +17,7 @@
         <h1>Iniciar Sessão</h1>
         <div class="input-block">
           <span>Email</span>
-          <input type="text" name="email" placeholder="Digite seu email" required>
+          <input type="text" name="email" placeholder="Digite seu email" value="{{email}}" required>
         </div>
         <div class="input-block">
           <span>Senha</span>

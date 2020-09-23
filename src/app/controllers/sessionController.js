@@ -52,7 +52,9 @@ module.exports = {
         `
       })
 
-      return res.send('Verifique seu email para recuperar sua senha!')
+      return res.render('session/recover-password', {
+        success: 'Verifique seu email para recuperar sua senha!'
+      })
     
     } catch (err) {
       console.log(err)

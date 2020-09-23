@@ -6,7 +6,10 @@ async function login(req, res, next) {
     const { email, password } = req.body
 
     const userExists = await User.checkIfUserExists(email)
-    if(!userExists) return res.send('Email não cadastrado!')
+    if(!userExists) 
+      return res.render('session/login', {
+        error: 'Usuário não encontrado!'
+      })
 
     const user = await User.get({
       condition: 'email',
@@ -14,19 +17,28 @@ async function login(req, res, next) {
     })
 
     const passed = await compare(password, user.password)
-    if(!passed) return res.send('Senha incorreta!')
+    if(!passed) 
+      return res.render('session/login', {
+        email,
+        error: 'Senha incorreta!'
+      })
 
     req.user = user
     next()
   } catch (err) {
     console.error(err)
-    return res.send('Hmmm... Parece que estamos com algum problema. Tente novamente mais tarde')
+    return res.render('session/login', {
+      email,
+      error: 'Hmmm... Parece que estamos com algum problema. Tente novamente mais tarde'
+    }) 
   }
 }
 
 async function checkIfUserIsLogged (req, res, next) {
   if(!req.session.loggedUser) {
-    return res.redirect('/login')
+    return res.redirect('/login', {
+      error: 'Login expirado! Por favor, realize o login novamente.'
+    })
   }
 
   next()
@@ -37,7 +49,10 @@ async function forgot(req, res, next) {
     const { email } = req.body
 
     const userExists = await User.checkIfUserExists(email)
-    if(!userExists) return res.send('Email não cadastrado!')
+    if(!userExists)
+      return res.render('session/recover-password', {
+        error: 'Email não cadastrado!'
+      })
 
     const user = await User.get({
       condition: 'email',
@@ -49,7 +64,10 @@ async function forgot(req, res, next) {
     next()
   } catch (err) {
     console.error(err)
-    return res.send('Hmmm... Parece que estamos com algum problema. Tente novamente mais tarde')
+    return res.render('session/recover-password', {
+      email,
+      error: 'Hmmm... Parece que estamos com algum problema. Tente novamente mais tarde'
+    }) 
   }
 }
 
@@ -57,18 +75,34 @@ async function reset(req, res, next) {
   const { email, password, passwordRepeat, token } = req.body
 
   const userExists = await User.checkIfUserExists(email)
-  if(!userExists) return res.send('Email não cadastrado!')
-  if(password != passwordRepeat) return res.send('As senhas não conferem')
+  if(!userExists)
+    return res.render('session/reset-password', {
+      email,
+      error: 'Email não cadastrado!'
+    })
+  if(password != passwordRepeat)
+  return res.render('session/reset-password', {
+    email,
+    error: 'As senhas não conferem!'
+  }) 
 
   const user = await User.get({
     condition: 'email',
     value: email
   })
 
-  if(token != user.token) return res.send('Token inválido! Solicite uma nova recuperação de senha')
+  if(token != user.token) 
+    return res.render('session/reset-password', {
+      email,
+      error: 'Token inválido! Solicite uma nova recuperação de senha'
+    })
   let now = new Date()
   now = now.setHours(now.getHours())
-  if(now > user.reset_token_expires) return res.send('Token expirado! Solicite uma nova recuperação de senha')
+  if(now > user.reset_token_expires) 
+    return res.render('session/reset-password', {
+      email,
+      error: 'Token expirado! Solicite uma nova recuperação de senha'
+    })
 
   req.user = user
 

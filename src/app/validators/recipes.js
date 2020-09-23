@@ -15,12 +15,18 @@ function post(req, res, next) {
   const keys = Object.keys(req.body)
   for(key of keys) {
     if(req.body[key] == "") {
-      return res.send('Por favor, preencha todos os campos!')
+      return res.render('admin/recipes/create', {
+        recipe: req.body,
+        error: 'Por favor, preencha todos os campos!'
+      })
     }
   }
 
   if(!req.files) {
-    return res.send('Por favor, envie ao menos uma imagem!')
+    return res.render('admin/recipes/create', {
+      recipe: req.body,
+      error: 'Por favor, envie uma imagem de avatar!'
+    })
   }
 
   next()
@@ -33,7 +39,9 @@ async function edit(req, res, next) {
   let results = await Recipe.show(id)
   const recipe = results.rows[0]
   if(recipe.user_id != loggedUser.id && !loggedUser.is_admin)
-    return res.send('Somente o usuário que criou esta receita pode editá-la!')
+    return res.render('admin/recipes/index', {
+      error: 'Somente o usuário que criou esta receita pode editá-la!'
+    })
   
   next()
 }
@@ -66,7 +74,9 @@ async function del(req, res, next) {
   const recipe = results.rows[0]
 
   if(recipe.user_id != loggedUser.id && !loggedUser.is_admin)
-    return res.send('Somente o usuário que criou esta receita pode apagá-la!')
+    return res.render('admin/recipes/index', {
+      error: 'Somente o usuário que criou esta receita pode apagá-la!'
+    })
   
   next()
 }
