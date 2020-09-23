@@ -664,6 +664,20 @@ header.admin-header span.selected {
   margin-top: 16px;
 }
 
+.login-form .submit-block button {
+  font-weight: bold;
+}
+
+.login-form .submit-block.recover {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.login-form .submit-block.recover button {
+  width: 100px;
+  font-weight: bold;
+}
+
 .login-form .submit-block a {
   text-decoration: none;
   color: gray;

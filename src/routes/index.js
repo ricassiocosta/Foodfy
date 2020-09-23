@@ -13,6 +13,7 @@ routes.get('/receitas/:recipe_id', recipesController.show)
 routes.get('/login', sessionController.loginForm)
 routes.get('/logout', sessionController.logout)
 routes.post('/login', sessionValidator.login ,sessionController.login)
+routes.get('/recuperar-senha', sessionController.recover)
 
 routes.use('/admin', sessionValidator.checkIfUserIsLogged, admin)
 

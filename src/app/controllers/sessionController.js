@@ -15,5 +15,9 @@ module.exports = {
   logout(req, res) {
     req.session.destroy()
     return res.redirect('/')
+  },
+
+  recover(req, res) {
+    return res.render('session/recover-password')
   }
 }
