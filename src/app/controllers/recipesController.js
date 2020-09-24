@@ -23,7 +23,7 @@ module.exports = {
       })
       await Promise.all(filesPromise)
 
-      return res.redirect(`/admin/receitas/${recipe.id}`)
+      return res.redirect(`/admin/receitas/${recipe.id}?status=success&from=create`)
     }).catch((err) => {
       throw new Error(err)
     })
@@ -33,7 +33,14 @@ module.exports = {
     if(req.is_admin) {
       const recipes = await returnAllRecipes()
       File.translateImagesURL(req, recipes)
-      return res.render('admin/recipes/index', { recipes })
+      const data = { recipes }
+
+      const { status, from } = req.query
+      if(status == 'success' && from == 'delete') {
+        data.success = 'Receita apagada com sucesso!'
+      }
+
+      return res.render('admin/recipes/index', data)
     } else {
       const { recipes, filter, pagination } = await returnPaginatedRecipes()
       File.translateImagesURL(req, recipes)
@@ -118,7 +125,18 @@ module.exports = {
       .then((results) => {
         const recipe = results.rows[0]
         if(recipe) {
-          return res.render('admin/recipes/show', { recipe, files, loggedUser })
+          const data = { recipe, files, loggedUser }
+
+          const { status, from } = req.query
+          if(status == 'success' && from == 'update') {
+            data.success = 'Atualização realizada com sucesso!'
+          } else if(status == 'success' && from == 'create') {
+            data.success = 'Receita criada com sucesso!'
+          } else if(status != null) {
+            data.error = 'Erro ao tentar atualizar, tente novamente!'
+          }
+
+          return res.render('admin/recipes/show', data)
         } else {
           return res.status(404).send('Receita não encontrada!')
         }
@@ -163,7 +181,7 @@ module.exports = {
     if(recipe) {
       Recipe.update(req.body)
       .then(() => {
-        return res.redirect(`/admin/receitas/${recipeId}`)
+        return res.redirect(`/admin/receitas/${recipeId}?status=success&from=update`)
       }).catch((err) => {
         throw new Error(err)
       })
@@ -181,7 +199,7 @@ module.exports = {
     if(recipe) {
       Recipe.delete(recipeId)
       .then(() => {
-        return res.redirect('/admin/receitas')
+        return res.redirect('/admin/receitas?status=success&from=delete')
       }).catch((err) => {
         throw new Error(err)
       })

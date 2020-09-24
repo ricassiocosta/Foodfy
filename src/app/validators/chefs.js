@@ -71,19 +71,31 @@ function put(req, res, next) {
 
 async function del(req, res, next) {
   const { loggedUser } = req.session
+
+  let results = await Chef.all()
+  const chefs = results.rows
+  const chefsListing = chefs.map(chef => ({
+    ...chef,
+    avatar_url:`${req.protocol}://${req.headers.host}${chef.avatar_url.replace("public", "")}`
+  }))
+
   if(!loggedUser.is_admin)
     return res.render('admin/chefs/index', {
-      error: 'Somente administradores podem apagar chefs!'
+      error: 'Somente administradores podem apagar chefs!',
+      chefs: chefsListing,
+      loggedUser
     }) 
 
   const chefId = req.params.chef_id
 
-  let results = await Chef.show(chefId)
+  results = await Chef.show(chefId)
   const recipesAmount = results.rows[0].recipes_amount
 
   if(recipesAmount > 0) 
     return res.render('admin/chefs/index', {
-      error: 'O Chef não pôde ser deletado! Delete todas as receitas de um chefe antes de deletá-lo.'
+      error: 'O Chef não pôde ser apagado! Apague todas as receitas de um chefe antes de apagá-lo.',
+      chefs: chefsListing,
+      loggedUser
     }) 
   
   next()

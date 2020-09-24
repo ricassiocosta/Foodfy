@@ -21,18 +21,24 @@ async function create(req, res, next) {
 }
 
 async function put(req, res, next) {
-  const { id, email, password } = req.body
+  const { id, email, password, name } = req.body
   const { loggedUser } = req.session
+
+  const users = await User.getAllUsers()
   
   if((!loggedUser.is_admin) && loggedUser.id != id)
     return res.render('admin/users/index', {
-      error: 'Somente administradores podem atualizar o cadastrado de outros usuários!'
+      error: 'Somente administradores podem atualizar o cadastrado de outros usuários!',
+      users,
+      loggedUser
     }) 
 
   const passed = await compare(password, loggedUser.password)
   if(!passed) 
-    return res.render('admin/users/index', {
-      error: 'Senha incorreta!'
+    return res.render('admin/users/edit', {
+      error: 'Senha incorreta!',
+      email,
+      name
     }) 
 
   const user = await User.get({
@@ -43,13 +49,17 @@ async function put(req, res, next) {
   const userExists = await User.checkIfUserExists(email)
   if(userExists && email != user.email) {
     return res.render('admin/users/index', {
-      error: 'Já existe um usuário cadastrado com o email informado!'
+      error: 'Já existe um usuário cadastrado com o email informado!',
+      users,
+      loggedUser
     }) 
   }
 
   if(loggedUser.is_admin && loggedUser.id == user.id && loggedUser.is_admin != user.is_admin) {
     return res.render('admin/users/index', {
-      error: 'Não é possível deixar de ser admin'
+      error: 'Não é possível deixar de ser admin',
+      users,
+      loggedUser
     }) 
   }
 

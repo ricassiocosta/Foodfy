@@ -78,11 +78,13 @@ async function reset(req, res, next) {
   if(!userExists)
     return res.render('session/reset-password', {
       email,
+      token,
       error: 'Email não cadastrado!'
     })
   if(password != passwordRepeat)
   return res.render('session/reset-password', {
     email,
+    token,
     error: 'As senhas não conferem!'
   }) 
 

@@ -10,10 +10,20 @@ module.exports = {
     try {
       User.getAllUsers()
       .then((results) => {
-        return res.render('admin/users/index', { 
-          loggedUser, 
-          users: results 
-        })
+        const data = { loggedUser, users: results }
+
+        const { status, from } = req.query
+        if(status == 'success' && from == 'update') {
+          data.success = 'Atualização realizada com sucesso!'
+        } else if(status == 'success' && from == 'create') {
+          data.success = 'Usuário criado com sucesso!'
+        } else if(status == 'success' && from == 'delete') {
+          data.success = 'Usuário apagado com sucesso!'
+        } else if(status != null) {
+          data.error = 'Erro ao tentar atualizar, tente novamente!'
+        }
+
+        return res.render('admin/users/index', data)
       })
       .catch((err) => {
         console.error(err)
@@ -27,7 +37,7 @@ module.exports = {
   async post(req, res) {
     try {
       await User.create(req.body)
-      return res.redirect('/admin/usuarios')
+      return res.redirect('/admin/usuarios?status=success&from=create')
     } catch (err) {
       console.error(err)
     }
@@ -48,7 +58,7 @@ module.exports = {
   async put(req, res) {
     try {
       await User.update(req.body)
-      return res.redirect('/admin/usuarios')
+      return res.redirect('/admin/usuarios?status=success&from=update')
     } catch (err) {
       console.error(err)
     }
@@ -58,7 +68,7 @@ module.exports = {
     const { id } = req.params
     try {
       await User.delete(id)
-      return res.redirect('/admin/usuarios')
+      return res.redirect('/admin/usuarios?status=success&from=delete')
     } catch (err) {
       console.error(err)
     }
