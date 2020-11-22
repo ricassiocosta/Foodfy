@@ -36,7 +36,7 @@ async function edit(req, res, next) {
   const id = req.params.recipe_id
   const { loggedUser } = req.session
 
-  const recipe = await Recipe.finOne({ where: { id } })
+  const recipe = await Recipe.findOne({ where: { id } })
   if (recipe.user_id != loggedUser.id && !loggedUser.is_admin)
     return res.render("admin/recipes/index", {
       error: "Somente o usuário que criou esta receita pode editá-la!",

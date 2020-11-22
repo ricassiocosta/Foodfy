@@ -34,7 +34,7 @@ async function login(req, res, next) {
 
 async function checkIfUserIsLogged(req, res, next) {
   if (!req.session.loggedUser) {
-    return res.redirect("/login", {
+    return res.render("session/login", {
       error: "Login expirado! Por favor, realize o login novamente.",
     })
   }

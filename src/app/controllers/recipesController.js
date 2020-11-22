@@ -171,7 +171,7 @@ module.exports = {
       }
 
       async function getChefsListing() {
-        const chefsListing = await Chef.listing()
+        const chefsListing = await Chef.findAll()
         return chefsListing
       }
 
