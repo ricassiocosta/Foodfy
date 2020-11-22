@@ -1,28 +1,28 @@
-const Chef = require('../models/Chef')
+const Chef = require("../models/Chef")
 
 function post(req, res, next) {
   try {
     const { loggedUser } = req.session
-    if(!loggedUser.is_admin) 
-      return res.redirect('/admin', {
-        error: 'Somente administradores podem criar novos chefs'
+    if (!loggedUser.is_admin)
+      return res.redirect("/admin", {
+        error: "Somente administradores podem criar novos chefs",
       })
 
     const keys = Object.keys(req.body)
-    for(key of keys) {
-      if(req.body[key] == "") {
-        return res.render('admin/chefs/create', {
-          error: 'Por favor, preencha todos os campos!'
+    for (key of keys) {
+      if (req.body[key] == "") {
+        return res.render("admin/chefs/create", {
+          error: "Por favor, preencha todos os campos!",
         })
       }
     }
-  
-    if(!req.files) {
-      return res.render('admin/chefs/create', {
-        error: 'Por favor, envie uma imagem de avatar!'
+
+    if (!req.files) {
+      return res.render("admin/chefs/create", {
+        error: "Por favor, envie uma imagem de avatar!",
       })
     }
-    
+
     next()
   } catch (err) {
     console.error(err)
@@ -31,38 +31,38 @@ function post(req, res, next) {
 
 function manage(req, res, next) {
   const { loggedUser } = req.session
-  if(!loggedUser.is_admin) 
-    return res.render('admin/chefs/index', {
-      error: 'Somente administradores podem atualizar chefs'
+  if (!loggedUser.is_admin)
+    return res.render("admin/chefs/index", {
+      error: "Somente administradores podem atualizar chefs",
     })
-  
+
   next()
 }
 
 function put(req, res, next) {
   try {
     const { loggedUser } = req.session
-    if(!loggedUser.is_admin) 
-      return res.render('admin/chefs/index', {
-        error: 'Somente administradores podem atualizar chefs'
+    if (!loggedUser.is_admin)
+      return res.render("admin/chefs/index", {
+        error: "Somente administradores podem atualizar chefs",
       })
 
     const keys = Object.keys(req.body)
-    for(key of keys) {
-      if(req.body[key] == "") {
-        return res.render('admin/chefs/edit', {
-          error: 'Por favor, preencha todos os campos!',
-          user: req.body
+    for (key of keys) {
+      if (req.body[key] == "") {
+        return res.render("admin/chefs/edit", {
+          error: "Por favor, preencha todos os campos!",
+          user: req.body,
         })
       }
     }
-  
-    if(!req.files) {
-      return res.render('admin/chefs/edit', {
-        error: 'Por favor, envie uma imagem de avatar!'
+
+    if (!req.files) {
+      return res.render("admin/chefs/edit", {
+        error: "Por favor, envie uma imagem de avatar!",
       })
     }
-    
+
     next()
   } catch (err) {
     console.error(err)
@@ -72,32 +72,40 @@ function put(req, res, next) {
 async function del(req, res, next) {
   const { loggedUser } = req.session
 
-  let results = await Chef.all()
-  const chefs = results.rows
-  const chefsListing = chefs.map(chef => ({
+  let chefs = await Chef.findAll()
+  chefsPromise = chefs.map(async (chef) => ({
     ...chef,
-    avatar_url:`${req.protocol}://${req.headers.host}${chef.avatar_url.replace("public", "")}`
+    avatar_url: await Chef.getAvatar(chef.id),
+  }))
+  chefs = await Promise.all(chefsPromise)
+
+  const chefsListing = chefs.map((chef) => ({
+    ...chef,
+    avatar_url: `${req.protocol}://${req.headers.host}${chef.avatar_url.replace(
+      "public",
+      ""
+    )}`,
   }))
 
-  if(!loggedUser.is_admin)
-    return res.render('admin/chefs/index', {
-      error: 'Somente administradores podem apagar chefs!',
+  if (!loggedUser.is_admin)
+    return res.render("admin/chefs/index", {
+      error: "Somente administradores podem apagar chefs!",
       chefs: chefsListing,
-      loggedUser
-    }) 
+      loggedUser,
+    })
 
   const chefId = req.params.chef_id
 
-  results = await Chef.show(chefId)
-  const recipesAmount = results.rows[0].recipes_amount
+  recipes = await Chef.getRecipes(chefId)
 
-  if(recipesAmount > 0) 
-    return res.render('admin/chefs/index', {
-      error: 'O Chef não pôde ser apagado! Apague todas as receitas de um chefe antes de apagá-lo.',
+  if (recipes.length > 0)
+    return res.render("admin/chefs/index", {
+      error:
+        "O Chef não pôde ser apagado! Apague todas as receitas de um chefe antes de apagá-lo.",
       chefs: chefsListing,
-      loggedUser
-    }) 
-  
+      loggedUser,
+    })
+
   next()
 }
 
@@ -105,5 +113,5 @@ module.exports = {
   post,
   manage,
   put,
-  del
+  del,
 }

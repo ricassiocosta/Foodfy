@@ -11,12 +11,12 @@
     <form method="POST" action="/admin/chefs/{{chef.id}}?_method=PUT" enctype="multipart/form-data">
       <div class="header-edit">
         <div>
-          <span>Editando chef</span>
+          <span>Editando</span>
         </div>
         <input type="hidden" name="id" value="{{chef.id}}">
         <div class="edit-actions">
           <label for="delete" class="delete">Deletar</label>
-          <button type="submit" class="save">Salvar chef</button>
+          <button type="submit" class="save">Salvar</button>
         </div>
       </div>
       {% include "admin/chefs/fields.njk" %}

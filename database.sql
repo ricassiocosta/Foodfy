@@ -14,7 +14,7 @@ CREATE TABLE "chefs" (
   file_id INT
 );
 
-ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id") ON DELETE CASCADE;
+ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
 
 CREATE TABLE "users" (
   id SERIAL PRIMARY KEY,

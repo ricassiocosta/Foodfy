@@ -1,6 +1,6 @@
-const db = require('../../config/database')
-const { date } = require('../../utils/date')
-const File = require('../models/File')
+const db = require("../../config/database")
+const { date } = require("../../utils/date")
+const File = require("../models/File")
 
 module.exports = {
   create(data, loggedUser) {
@@ -21,11 +21,15 @@ module.exports = {
       data.chef,
       loggedUser.id,
       data.title,
-      typeof data.ingredients === "string" ? [data.ingredients] : data.ingredients,
-      typeof data.preparation === "string" ? [data.preparation] : data.preparation,
+      typeof data.ingredients === "string"
+        ? [data.ingredients]
+        : data.ingredients,
+      typeof data.preparation === "string"
+        ? [data.preparation]
+        : data.preparation,
       data.information,
       date(Date.now()).ISO,
-      date(Date.now()).ISO
+      date(Date.now()).ISO,
     ]
 
     return db.query(query, values)
@@ -42,23 +46,28 @@ module.exports = {
   },
 
   show(recipeID) {
-    return db.query(`
+    return db.query(
+      `
       SELECT recipes.*, chefs.name AS author
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
       WHERE recipes.id = $1
-      `, 
-    [recipeID])
+      `,
+      [recipeID]
+    )
   },
 
   files(recipeID) {
-    return db.query(`
+    return db.query(
+      `
       SELECT files.id, files.name, files.path
       FROM files
       LEFT JOIN recipe_files ON(files.id = recipe_files.file_id)
       LEFT JOIN recipes ON(recipe_files.recipe_id = recipes.id)
       WHERE recipes.id = $1
-    `, [recipeID])
+    `,
+      [recipeID]
+    )
   },
 
   mostAccessed() {
@@ -88,10 +97,14 @@ module.exports = {
     const values = [
       data.title,
       data.chef,
-      typeof data.ingredients === "string" ? [data.ingredients] : data.ingredients,
-      typeof data.preparation === "string" ? [data.preparation] : data.preparation,
+      typeof data.ingredients === "string"
+        ? [data.ingredients]
+        : data.ingredients,
+      typeof data.preparation === "string"
+        ? [data.preparation]
+        : data.preparation,
       data.information,
-      data.id
+      data.id,
     ]
 
     return db.query(query, values)
@@ -103,14 +116,13 @@ module.exports = {
   },
 
   paginate(filter, offset) {
-
     let query = "",
-        filterQuery = "",
-        totalQuery = `(
+      filterQuery = "",
+      totalQuery = `(
           SELECT count (*) FROM recipes
         ) AS total`
-    
-    if(filter) {
+
+    if (filter) {
       filterQuery = `
         WHERE recipes.title ILIKE '%${filter}%'
       `
@@ -131,5 +143,5 @@ module.exports = {
     `
 
     return db.query(query, [offset])
-  }
+  },
 }

@@ -1,20 +1,21 @@
-const { compare } = require('bcryptjs')
-const User = require('../models/User')
+const { compare } = require("bcryptjs")
+const User = require("../models/User")
 
 async function create(req, res, next) {
   const { loggedUser } = req.session
+  const { email } = req.body
 
-  if(!loggedUser.is_admin) {
-    return res.render('admin/users/index', {
-      error: 'Somente administradores podem criar novos usuários!'
-    }) 
+  if (!loggedUser.is_admin) {
+    return res.render("admin/users/index", {
+      error: "Somente administradores podem criar novos usuários!",
+    })
   }
 
-  const userExists = await User.checkIfUserExists(req.body.email)
-  if(userExists) {
-    return res.render('admin/users/index', {
-      error: 'Já existe um usuário cadastrado com o email informado!'
-    }) 
+  const userExists = await User.findOne({ where: { email } })
+  if (userExists) {
+    return res.render("admin/users/index", {
+      error: "Já existe um usuário cadastrado com o email informado!",
+    })
   }
 
   next()
@@ -24,46 +25,48 @@ async function put(req, res, next) {
   const { id, email, password, name } = req.body
   const { loggedUser } = req.session
 
-  const users = await User.getAllUsers()
-  
-  if((!loggedUser.is_admin) && loggedUser.id != id)
-    return res.render('admin/users/index', {
-      error: 'Somente administradores podem atualizar o cadastrado de outros usuários!',
+  const users = await User.findAll()
+
+  if (!loggedUser.is_admin && loggedUser.id != id)
+    return res.render("admin/users/index", {
+      error:
+        "Somente administradores podem atualizar o cadastrado de outros usuários!",
       users,
-      loggedUser
-    }) 
+      loggedUser,
+    })
 
   const passed = await compare(password, loggedUser.password)
-  if(!passed) 
-    return res.render('admin/users/edit', {
-      error: 'Senha incorreta!',
+  if (!passed)
+    return res.render("admin/users/edit", {
+      error: "Senha incorreta!",
       email,
-      name
-    }) 
+      name,
+    })
 
-  const user = await User.get({
-    condition: 'id',
-    value: id
-  })
+  const user = await User.findOne({ where: { id } })
 
-  const userExists = await User.checkIfUserExists(email)
-  if(userExists && email != user.email) {
-    return res.render('admin/users/index', {
-      error: 'Já existe um usuário cadastrado com o email informado!',
+  const userExists = await User.findOne({ where: { email } })
+  if (userExists && email != user.email) {
+    return res.render("admin/users/index", {
+      error: "Já existe um usuário cadastrado com o email informado!",
       users,
-      loggedUser
-    }) 
+      loggedUser,
+    })
   }
 
-  if(loggedUser.is_admin && loggedUser.id == user.id && loggedUser.is_admin != user.is_admin) {
-    return res.render('admin/users/index', {
-      error: 'Não é possível deixar de ser admin',
+  if (
+    loggedUser.is_admin &&
+    loggedUser.id == user.id &&
+    loggedUser.is_admin != user.is_admin
+  ) {
+    return res.render("admin/users/index", {
+      error: "Não é possível deixar de ser admin",
       users,
-      loggedUser
-    }) 
+      loggedUser,
+    })
   }
 
-  if(user.is_admin) {
+  if (user.is_admin) {
     req.body.is_admin = true
   }
 
@@ -74,21 +77,21 @@ async function del(req, res, next) {
   const { loggedUser } = req.session
   const { id } = req.params
 
-  if(!loggedUser.is_admin)
-    return res.render('admin/users/index', {
-      error: 'Somente administradores podem apagar usuários!'
-    }) 
-  
-  if(loggedUser.id == id)
-    return res.render('admin/users/index', {
-      error: 'Você não pode apagar sua própria conta!'
-    }) 
-  
+  if (!loggedUser.is_admin)
+    return res.render("admin/users/index", {
+      error: "Somente administradores podem apagar usuários!",
+    })
+
+  if (loggedUser.id == id)
+    return res.render("admin/users/index", {
+      error: "Você não pode apagar sua própria conta!",
+    })
+
   next()
 }
 
 module.exports = {
   create,
   put,
-  del
+  del,
 }
