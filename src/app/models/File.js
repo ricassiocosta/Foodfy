@@ -57,13 +57,13 @@ module.exports = {
     }
   },
 
-  async deleteFile(fileId) {
+  async deleteFile(id) {
     try {
       let results = await db.query(
         `SELECT files.* 
         FROM files
         WHERE files.id = $1`,
-        [fileId]
+        [id]
       )
       const file = results.rows[0]
       fs.unlinkSync(file.path)

@@ -1,9 +1,12 @@
 const db = require("../../config/database")
 const { date } = require("../../utils/date")
 const File = require("../models/File")
+const Base = require("./Base")
 
+Base.init({ table: "recipes" })
 module.exports = {
-  create(data, loggedUser) {
+  ...Base,
+  async create(data, loggedUser) {
     const query = `
       INSERT INTO recipes (
         chef_id,
@@ -32,33 +35,24 @@ module.exports = {
       date(Date.now()).ISO,
     ]
 
-    return db.query(query, values)
+    const results = await db.query(query, values)
+    return results.rows[0]
   },
 
-  all() {
-    return db.query(`
+  async all() {
+    const results = await db.query(`
       SELECT DISTINCT ON (recipes.title) recipes.*, files.path AS image
       FROM recipes
       LEFT JOIN recipe_files ON (recipes.id = recipe_files.recipe_id)
       LEFT JOIN files ON (recipe_files.file_id = files.id)
       ORDER BY recipes.title
       `)
+
+    return results.rows
   },
 
-  show(recipeID) {
-    return db.query(
-      `
-      SELECT recipes.*, chefs.name AS author
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      WHERE recipes.id = $1
-      `,
-      [recipeID]
-    )
-  },
-
-  files(recipeID) {
-    return db.query(
+  async files(id) {
+    const results = await db.query(
       `
       SELECT files.id, files.name, files.path
       FROM files
@@ -66,12 +60,14 @@ module.exports = {
       LEFT JOIN recipes ON(recipe_files.recipe_id = recipes.id)
       WHERE recipes.id = $1
     `,
-      [recipeID]
+      [id]
     )
+
+    return results.rows
   },
 
-  mostAccessed() {
-    return db.query(`
+  async mostAccessed() {
+    const results = await db.query(`
       SELECT DISTINCT ON (recipes.id) recipes.*, files.path AS image, chefs.name AS author
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
@@ -80,9 +76,10 @@ module.exports = {
       ORDER BY recipes.id 
       LIMIT(6)
       `)
+    return results.rows
   },
 
-  update(data) {
+  async update(data) {
     const query = `
       UPDATE recipes SET
         title=($1),
@@ -107,15 +104,17 @@ module.exports = {
       data.id,
     ]
 
-    return db.query(query, values)
+    const results = await db.query(query, values)
+    return results.rows[0]
   },
 
-  async delete(recipeID) {
-    await File.deleteRecipeImages(recipeID)
-    return db.query(`DELETE FROM recipes WHERE id = $1`, [recipeID])
+  async delete(id) {
+    await File.deleteRecipeImages(id)
+    const results = await db.query(`DELETE FROM recipes WHERE id = $1`, [id])
+    return results.rows[0]
   },
 
-  paginate(filter, offset) {
+  async paginate(filter, offset) {
     let query = "",
       filterQuery = "",
       totalQuery = `(
@@ -142,6 +141,20 @@ module.exports = {
       OFFSET $1
     `
 
-    return db.query(query, [offset])
+    const results = await db.query(query, [offset])
+    return results.rows
+  },
+
+  async getAuthor(id) {
+    const results = await db.query(
+      `
+      SELECT chefs.name as author FROM recipes
+      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      WHERE recipes.id = $1
+    `,
+      [id]
+    )
+
+    return results.rows[0].author
   },
 }
