@@ -13,7 +13,7 @@ module.exports = {
 
     const values = [file.filename, file.path]
 
-    db.query(query, values, (err, results) => {
+    db.query(query, values, async (err, results) => {
       if (err) throw `DATABASE error! ${err}`
       const fileId = results.rows[0].id
       const query = `
@@ -25,7 +25,8 @@ module.exports = {
         `
       const values = [recipeId, fileId]
 
-      return db.query(query, values)
+      results = await db.query(query, values)
+      return results.rows[0]
     })
   },
 
@@ -46,14 +47,17 @@ module.exports = {
         db.query(
           `DELETE FROM recipe_files WHERE file_id = $1`,
           [file.id],
-          (err) => {
+          async (err) => {
             if (err) throw new Error(err)
-            return db.query(`DELETE FROM files WHERE id = $1`, [file.id])
+            results = await db.query(`DELETE FROM files WHERE id = $1`, [
+              file.id,
+            ])
+            return results.rows[0]
           }
         )
       })
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   },
 
@@ -70,17 +74,19 @@ module.exports = {
       db.query(
         `DELETE FROM recipe_files WHERE file_id = $1`,
         [file.id],
-        (err) => {
+        async (err) => {
           if (err) throw new Error(err)
-          return db.query(`DELETE FROM files WHERE id = $1`, [file.id])
+          results = await db.query(`DELETE FROM files WHERE id = $1`, [file.id])
+          return results.rows[0]
         }
       )
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   },
 
   translateImagesURL(req, recipes) {
+    console.log(recipes)
     recipes.map((recipe, index) => {
       recipes[index].image = {
         name: `${recipe.title}`,

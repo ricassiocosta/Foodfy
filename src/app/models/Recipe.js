@@ -6,7 +6,7 @@ const Base = require("./Base")
 Base.init({ table: "recipes" })
 module.exports = {
   ...Base,
-  async create(data, loggedUser) {
+  async create(data) {
     const query = `
       INSERT INTO recipes (
         chef_id,
@@ -22,7 +22,7 @@ module.exports = {
     `
     const values = [
       data.chef,
-      loggedUser.id,
+      data.loggedUser,
       data.title,
       typeof data.ingredients === "string"
         ? [data.ingredients]

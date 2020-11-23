@@ -15,7 +15,9 @@ module.exports = {
   async post(req, res) {
     try {
       const { loggedUser } = req.session
-      const recipe = await Recipe.create(req.body, loggedUser)
+      let data = req.body
+      data.loggedUser = loggedUser.id
+      const recipe = await Recipe.create(data)
       const filesPromise = req.files.map((file) => {
         File.createRecipeImages(file, recipe.id)
       })
@@ -123,7 +125,11 @@ module.exports = {
       }
 
       async function returnToSiteView() {
-        const recipe = await Recipe.findOne({ where: { id } })
+        let recipe = await Recipe.findOne({ where: { id } })
+        recipe = {
+          ...recipe,
+          author: await Recipe.getAuthor(recipe.id),
+        }
         if (recipe) {
           return res.render("site/recipe-detail", { recipe, files })
         } else {

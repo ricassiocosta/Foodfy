@@ -27,9 +27,7 @@ module.exports = {
   logout(req, res) {
     try {
       req.session.destroy()
-      return res.render("site/home", {
-        success: "Logout realizado com sucesso!",
-      })
+      return res.redirect("/")
     } catch (err) {
       console.error(err)
     }
@@ -69,7 +67,6 @@ module.exports = {
         success: "Verifique seu email para recuperar sua senha!",
       })
     } catch (err) {
-      console.log(err)
       return res.render("session/login", {
         error:
           "Eita! Parece que alguma coisa não está certa com nosso serviço... tente novamente mais tarde :/",

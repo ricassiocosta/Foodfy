@@ -9,7 +9,7 @@ module.exports = {
   async post(req, res) {
     try {
       const chef = await Chef.create(req.body)
-      File.createChefAvatar(req.files[0], chef.id)
+      Chef.createAvatar(chef.id, req.files[0])
       return res.redirect(`/admin/chefs/${chef.id}?status=success&from=create`)
     } catch (err) {
       console.error(err)
