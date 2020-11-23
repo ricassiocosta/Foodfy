@@ -86,7 +86,6 @@ module.exports = {
   },
 
   translateImagesURL(req, recipes) {
-    console.log(recipes)
     recipes.map((recipe, index) => {
       recipes[index].image = {
         name: `${recipe.title}`,
