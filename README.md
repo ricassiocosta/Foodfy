@@ -8,7 +8,7 @@ Created during the Launchbase bootcamp, as a completion project.
 
 ## Installation
 
-First of all, to run this application you need to have to setup the database indicated in ```sh database.sql```. 
+First of all, to run this application you need to have to setup the database indicated in ```database.sql```. 
 With the database configurated you can run the commands bellow:
 
 ```sh
