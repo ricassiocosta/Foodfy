@@ -1,6 +1,5 @@
 # Foodfy
 
-
 Foodfy is a community recipe repository, where people can create and share their favorite recipes.
 Created during the Launchbase bootcamp, as a completion project.
 
@@ -8,14 +7,25 @@ Created during the Launchbase bootcamp, as a completion project.
 
 ## Installation
 
-First of all, to run this application you need to have to setup the database indicated in ```database.sql```. 
-With the database configurated you can run the commands bellow:
+First of all, to run this application you need to have to setup the database indicated in `database.sql`. </br>
+After that, you must to setup the following environment variables:</br>
+
+```sh
+DATABASE_USERNAME
+DATABASE_PSWD
+DATABASE_HOST
+DATABASE_PORT
+DATABASE_NAME
+```
+
+With the database and environment variables configured, you can run the commands bellow:
 
 ```sh
 yarn install
 node seed.js
 yarn start
 ```
+
 you can use both <strong>yarn</strong> or <strong>npm</strong>
 
 The default password for any user created is '1234'. The admin users are randomly created.
@@ -32,7 +42,8 @@ The default password for any user created is '1234'. The admin users are randoml
 
 Ricássio Costa – [Linkedin](https://linkedin.com/in/ricassiocosta) – riksiocosta@gmail.com
 
-Distributed under the MIT license. See ``LICENSE`` for more information.
+Distributed under the MIT license. See `LICENSE` for more information.
 
 <!-- Markdown link & img dfn's -->
+
 [npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
